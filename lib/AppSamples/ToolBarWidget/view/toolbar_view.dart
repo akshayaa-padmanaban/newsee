@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newsee/AppData/globalconfig.dart';
-import 'package:newsee/pages/address_page.dart';
+import 'package:newsee/pages/kyc_page.dart';
 import 'package:newsee/pages/loan_details_page.dart';
 import 'package:newsee/pages/personal_details_page.dart';
 import 'package:newsee/pages/sourcing_page.dart';
@@ -78,10 +78,10 @@ class ToolbarView extends StatelessWidget {
         drawer: Globalconfig.isInitialRoute ? null : Sidenavigationbar(),
         body: TabBarView(
           children: [
-            SourcingPage(title: 'Sourcing'),
-            PersonalDetailsPage(title: 'Personal'),
-            AddressPage(title: 'Address'),
-            LoanDetailsPage(title: 'LoanDetails'),
+            // SourcingPage(title: 'Sourcing'),
+            // PersonalDetailsPage(title: 'Personal'),
+            // AddressPage(title: 'Address'),
+            // LoanDetailsPage(title: 'LoanDetails'),
           ],
         ),
       ),
