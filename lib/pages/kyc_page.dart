@@ -36,6 +36,13 @@ class KycPage extends StatelessWidget {
                 label: 'Other ID Proof',
                 items: ['Direct Call', 'Lead Management System', 'Online', 'Partner', 'Website'],
               ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                  },
+                  child: Text('Next'),
+                ),
+              ),
             ],
           ),
         ),

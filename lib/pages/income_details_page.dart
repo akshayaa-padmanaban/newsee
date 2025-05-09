@@ -39,6 +39,13 @@ class IncomeDetailsPage extends StatelessWidget {
               _buildTextField('networth', 'Networth of the Applicant(₹)'),
               _buildTextField('company', 'Company'),
               _buildTextField('totalyears', 'Total Years of Employement'),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                  },
+                  child: Text('Next'),
+                ),
+              ),
             ],
           ),
         ),

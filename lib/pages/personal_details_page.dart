@@ -89,6 +89,14 @@ class PersonalDetailsPage extends StatelessWidget {
                             ],
                           ),
                     ),
+                    SizedBox(height: 20),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                  },
+                  child: Text('Next'),
+                ),
+              ),
             ],
           ),
         ),

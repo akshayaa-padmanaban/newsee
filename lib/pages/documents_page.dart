@@ -38,6 +38,14 @@ class DocumentsPage extends StatelessWidget {
                 },
                 child: Text("ADD"),
               ),
+              SizedBox(width: 12),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                  },
+                  child: Text('Submit'),
+                ),
+              ),
             ],
           ),
         ),

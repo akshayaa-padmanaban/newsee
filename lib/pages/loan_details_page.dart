@@ -52,6 +52,13 @@ class LoanDetailsPage extends StatelessWidget {
                   'Website',
                 ],
               ),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                  },
+                  child: Text('Next'),
+                ),
+              ),
             ],
           ),
         ),

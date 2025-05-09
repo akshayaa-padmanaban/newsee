@@ -61,6 +61,15 @@ class SourcingPage extends StatelessWidget {
                 label: 'Product Interest',
                 items: ['Loan', 'Credit Card', 'Insurance'],
               ),
+              SizedBox(height: 20),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                  },
+                  child: Text('Next'),
+                ),
+              ),
+              SizedBox(height: 20),
             ],
           ),
         ),
@@ -107,3 +116,4 @@ class SourcingPage extends StatelessWidget {
     );
   }
 }
+
