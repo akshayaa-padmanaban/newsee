@@ -60,11 +60,35 @@ class PersonalDetailsPage extends StatelessWidget {
               _buildTextField('state', 'State'),
               _buildTextField('city', 'City'),
               _buildTextField('pincode', 'Pincode'),
-              _buildDropdown(
-                controlName: 'guarantorapplicable',
-                label: 'Whether Co-App/Guarantor Applicable?',
-                items: ['Loan', 'Credit Card', 'Insurance'],
-              ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: ReactiveDropdownField<String>(
+                        formControlName: 'guarantorapplicable',
+                        decoration: InputDecoration(
+                          labelText: 'Whether Co-App/Guarantor Applicable?',
+                          hintText: '--Select--',
+                          ),
+                          items: ['Yes', 'No']
+                          .map((e) => DropdownMenuItem<String>(
+                            value: e,
+                            child: Text(e),
+                            ))
+                            .toList(),
+                          ),
+                          ),
+                          SizedBox(width: 12),
+                          ElevatedButton(
+                            onPressed: () {
+                              },
+                              child: Text("+"),
+                              ),
+                            ],
+                          ),
+                    ),
             ],
           ),
         ),
