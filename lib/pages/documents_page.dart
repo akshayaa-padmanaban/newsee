@@ -22,23 +22,23 @@ class DocumentsPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _buildDropdown(
+              Dropdown(
                 controlName: 'applicanttype',
                 label: 'Applicant Type',
-                items: ['MSME', 'Retail'],
+                items: [''],
               ),
-              _buildDropdown(
+              Dropdown(
                 controlName: 'document',
                 label: 'Document Classification',
-                items: ['Direct Call', 'Lead Management System', 'Online', 'Partner', 'Website'],
+                items: ['Aadhar Card', 'Driving License', 'PAN Card', 'Voter ID'],
               ),
-              SizedBox(width: 12),
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                 },
                 child: Text("ADD"),
               ),
-              SizedBox(width: 12),
+              SizedBox(height: 50),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
@@ -53,7 +53,7 @@ class DocumentsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdown({
+  Widget Dropdown({
     required String controlName,
     required String label,
     required List<String> items,

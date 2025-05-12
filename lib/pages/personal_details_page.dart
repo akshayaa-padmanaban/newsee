@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:newsee/pages/guarantor_page.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-//import 'package:flutter/services.dart';
+import 'package:flutter/services.dart';  
 
 class PersonalDetailsPage extends StatelessWidget {
   final String title;
@@ -25,41 +26,44 @@ class PersonalDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
-      title: Text("Personal Details"),
-       ),
+      appBar: AppBar(
+        title: Text("Personal Details"),
+      ),
       body: ReactiveForm(
         formGroup: form,
         child: SingleChildScrollView(
           child: Column(
             children: [
-              _buildDropdown(
+             Dropdown(
                 controlName: 'customertype',
                 label: 'Customer Type',
                 items: ['Existing Customer', 'New Customer'],
               ),
-              _buildDropdown(
+              Dropdown(
                 controlName: 'constitution',
                 label: 'Constitution',
-                items: ['HUF', 'Individual', 'LLP', 'Partnership', 'Private Ltd'],
+                items: ['HUF', 'Individual', 'LLP', 'Partnership', 'Private Ltd', 
+                'Propiertorship', 'Public Ltd', 'Trust'],
               ),
-              _buildDropdown(
+              Dropdown(
                 controlName: 'leadcategory',
                 label: 'Lead Category',
                 items: ['Cold', 'Hot', 'Warm'],
               ),
-              _buildDropdown(
+              Dropdown(
                 controlName: 'title',
                 label: 'Title',
-                items: ['COLONEL', 'DR', 'MAJOR'],
+                items: ['COLONEL', 'DR', 'LT.COL', 'M/S', 'MAJOR', 'MASTER(MINOR)',
+                'MESSERS', 'MIGRATION DEFAULT', 'MISS', 'MOHAMMAD', 'MR', 'MRS', 
+                'MX', 'SHEIKH', 'SIR'],
               ),
-              _buildTextField('mobilenumber', 'Mobile Number'),
-              _buildTextField('emailid', 'Email Id'),
-              _buildTextField('address', 'Address'),
-              _buildTextField('addressline1', 'Address Line 1'),
-              _buildTextField('state', 'State'),
-              _buildTextField('city', 'City'),
-              _buildTextField('pincode', 'Pincode'),
+              TextField('mobilenumber', 'Mobile Number', isNumber: true),
+              TextField('emailid', 'Email Id'),
+              TextField('address', 'Address'),
+              TextField('addressline1', 'Address Line 1'),
+              TextField('state', 'State'),
+              TextField('city', 'City'),
+              TextField('pincode', 'Pincode', isNumber: true),
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -71,28 +75,40 @@ class PersonalDetailsPage extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: 'Whether Co-App/Guarantor Applicable?',
                           hintText: '--Select--',
-                          ),
-                          items: ['Yes', 'No']
-                          .map((e) => DropdownMenuItem<String>(
-                            value: e,
-                            child: Text(e),
-                            ))
+                        ),
+                        items: ['Yes', 'No']
+                            .map((e) => DropdownMenuItem<String>(
+                                  value: e,
+                                  child: Text(e),
+                                ))
                             .toList(),
-                          ),
-                          ),
-                          SizedBox(width: 12),
-                          ElevatedButton(
-                            onPressed: () {
-                              },
-                              child: Text("+"),
-                              ),
-                            ],
-                          ),
+                      ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(width: 12),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => GuarantorPage(title: 'test','test')),
+                        );
+                      },
+                      child: Text("+"),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
+                    if (form.valid) {
+                      final tabController = DefaultTabController.of(context);
+                      if (tabController.index < tabController.length - 1) {
+                        tabController.animateTo(tabController.index + 1);
+                      }
+                    } else {
+                      form.markAllAsTouched();
+                    }
                   },
                   child: Text('Next'),
                 ),
@@ -104,7 +120,7 @@ class PersonalDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDropdown({
+  Widget Dropdown({
     required String controlName,
     required String label,
     required List<String> items,
@@ -127,15 +143,15 @@ class PersonalDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String controlName, String label) {
+  Widget TextField(String controlName, String label, {bool isNumber = false}) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ReactiveTextField<String>(
         formControlName: controlName,
-        //  keyboardType: controlName == 'mobilenumber' ? TextInputType.number : TextInputType.text,
-        //  inputFormatters: controlName == 'mobilenumber'
-        //   ? [FilteringTextInputFormatter.digitsOnly]
-        //   : [],
+        keyboardType: isNumber ? TextInputType.number : TextInputType.text,  
+        inputFormatters: isNumber
+            ? [FilteringTextInputFormatter.digitsOnly] 
+            : [],
         decoration: InputDecoration(
           labelText: label,
         ),

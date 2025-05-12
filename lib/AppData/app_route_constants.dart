@@ -5,6 +5,10 @@ class AppRouteConstants {
   static const RouteProps HOME_PAGE = {'name': 'home', 'path': '/home'};
   static const RouteProps NEWLEAD_PAGE = {
     'name': 'newlead',
-    'path': '/newlead',
+    'path': '/newlead',};
+  static const RouteProps GUARANTOR_PAGE = {
+    'name': 'guarantor',
+    'path': '/guarantor',
   };
 }
+

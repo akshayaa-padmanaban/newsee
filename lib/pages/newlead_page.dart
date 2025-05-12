@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newsee/AppData/globalconfig.dart';
+import 'package:newsee/pages/check_page.dart';
 import 'package:newsee/pages/documents_page.dart';
 import 'package:newsee/pages/kyc_page.dart';
 import 'package:newsee/pages/income_details_page.dart';
@@ -12,7 +13,7 @@ class NewLeadPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 6,
+      length: 7,
       child: Scaffold(
         appBar:
             Globalconfig.isInitialRoute
@@ -49,16 +50,19 @@ class NewLeadPage extends StatelessWidget {
                         icon: Icon(Icons.face, color: Colors.white),
                       ),
                       Tab(
-                        icon: Icon(Icons.home, color: Colors.white),
+                        icon: Icon(Icons.badge, color: Colors.white),
                       ),
                       Tab(
-                        icon: Icon(Icons.currency_rupee_sharp, color: Colors.white),
+                        icon: Icon(Icons.wallet, color: Colors.white),
                       ),
                       Tab(
-                        icon: Icon(Icons.currency_rupee_sharp, color: Colors.white),
+                        icon: Icon(Icons.currency_rupee, color: Colors.white),
                       ),
                       Tab(
-                        icon: Icon(Icons.edit_document, color: Colors.white),
+                        icon: Icon(Icons.description, color: Colors.white),
+                      ),
+                      Tab(
+                        icon: Icon(Icons.done_all, color: Colors.white),
                       ),
                     ],
                   ),
@@ -67,12 +71,13 @@ class NewLeadPage extends StatelessWidget {
         drawer: Globalconfig.isInitialRoute ? null : Sidenavigationbar(),
         body: TabBarView(
           children: [
-            SourcingPage('Sourcing', title: 'Sourcing',),
+            SourcingPage('Sourcing', title: 'Sourcing'),
             PersonalDetailsPage('Personal', title: 'Personal'),
             KycPage('KYC', title: 'kyc'),
             IncomeDetailsPage('Income', title: 'Income'),
             LoanDetailsPage('Loan', title: 'loan'),
             DocumentsPage('Document', title: 'documents'),
+            CheckPage('Check',title: 'check'),
           ],
         ),
       ),
