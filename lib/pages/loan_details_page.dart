@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:newsee/widgets/dropdown.dart';
+import 'package:newsee/widgets/integer_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:flutter/services.dart';
 
 class LoanDetailsPage extends StatelessWidget {
   final String title;
@@ -8,15 +9,10 @@ class LoanDetailsPage extends StatelessWidget {
   LoanDetailsPage(String s, {required this.title, super.key});
 
   final form = FormGroup({
-    'applicanttype': FormControl<String>(validators: [Validators.required]),
-    'panno': FormControl<String>(validators: [Validators.required]),
-    'aadhaarno': FormControl<String>(
-      validators: [
-        Validators.required,
-        Validators.pattern(r'^\d{12}$'),
-      ],
-    ),
-    'otheridproof': FormControl<String>(validators: [Validators.required]),
+    'maincategory': FormControl<String>(validators: [Validators.required]),
+    'subcategory': FormControl<String>(validators: [Validators.required]),
+    'loanproduct': FormControl<String>(validators: [Validators.required]),
+    'loanamount': FormControl<String>(validators: [Validators.required]),
   });
 
   @override
@@ -31,31 +27,21 @@ class LoanDetailsPage extends StatelessWidget {
           child: Column(
             children: [
               Dropdown(
-                controlName: 'applicanttype',
-                label: 'Applicant Type',
-                items: ['MSME', 'Retail'],
-              ),
-              TextField('panno','PAN No',
-                onIconTap: () {},
-              ),
-              TextField('aadhaarno','Aadhaar No',
-                onIconTap: () {},
-                keyboardType: TextInputType.number, 
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly, 
-                ],
+                controlName: 'maincategory',
+                label: 'Main Category',
+                items: ['', ''],
               ),
               Dropdown(
-                controlName: 'otheridproof',
-                label: 'Other ID Proof',
-                items: [
-                  'Direct Call',
-                  'Lead Management System',
-                  'Online',
-                  'Partner',
-                  'Website',
-                ],
+                controlName: 'subcategory',
+                label: 'Sub Category',
+                items: ['', ''],
               ),
+              Dropdown(
+                controlName: 'loanproduct',
+                label: 'Loan Product',
+                items: ['', ''],
+              ),
+              IntegerTextField('loanamount', 'Loan Amount Requested(₹)'),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
@@ -78,62 +64,13 @@ class LoanDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget Dropdown({
-    required String controlName,
-    required String label,
-    required List<String> items,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: ReactiveDropdownField<String>(
-        formControlName: controlName,
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: '--Select--',
-        ),
-        items: items
-            .map(
-              (e) => DropdownMenuItem<String>(
-                value: e,
-                child: Text(e),
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  Widget TextField(
-    String controlName,
-    String label, {
-    VoidCallback? onIconTap,
-    TextInputType keyboardType = TextInputType.text,
-    List<TextInputFormatter>? inputFormatters,
-  }) {
+  Widget TextField(String controlName, String label) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ReactiveTextField<String>(
         formControlName: controlName,
-        keyboardType: keyboardType,
-        inputFormatters: inputFormatters,
         decoration: InputDecoration(
           labelText: label,
-          suffixIcon: onIconTap != null
-              ? Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size(60, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                    onPressed: onIconTap,
-                    child: Icon(Icons.camera_alt, size: 20),
-                  ),
-                )
-              : null,
         ),
       ),
     );

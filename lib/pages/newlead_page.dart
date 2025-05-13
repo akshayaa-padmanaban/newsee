@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:newsee/AppData/globalconfig.dart';
 import 'package:newsee/pages/check_page.dart';
 import 'package:newsee/pages/documents_page.dart';
-import 'package:newsee/pages/kyc_page.dart';
-import 'package:newsee/pages/income_details_page.dart';
 import 'package:newsee/pages/loan_details_page.dart';
+import 'package:newsee/pages/income_details_page.dart';
+import 'package:newsee/pages/kyc_page.dart';
 import 'package:newsee/pages/personal_details_page.dart';
 import 'package:newsee/pages/sourcing_page.dart';
-import 'package:newsee/widgets/side_navigation.dart';
+//import 'package:newsee/widgets/side_navigation.dart';
 
 class NewLeadPage extends StatelessWidget {
   @override
@@ -68,7 +68,7 @@ class NewLeadPage extends StatelessWidget {
                   ),
                   actions: <Widget>[],
                 ),
-        drawer: Globalconfig.isInitialRoute ? null : Sidenavigationbar(),
+        //drawer: Globalconfig.isInitialRoute ? null : Sidenavigationbar(),
         body: TabBarView(
           children: [
             SourcingPage('Sourcing', title: 'Sourcing'),

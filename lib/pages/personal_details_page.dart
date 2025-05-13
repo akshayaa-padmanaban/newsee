@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:newsee/pages/guarantor_page.dart';
+import 'package:flutter/services.dart';
+import 'package:newsee/widgets/dropdown.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:flutter/services.dart';  
+import 'package:newsee/pages/guarantor_page.dart';
 
 class PersonalDetailsPage extends StatelessWidget {
   final String title;
@@ -13,50 +14,44 @@ class PersonalDetailsPage extends StatelessWidget {
     'constitution': FormControl<String>(validators: [Validators.required]),
     'leadcategory': FormControl<String>(validators: [Validators.required]),
     'title': FormControl<String>(validators: [Validators.required]),
-    'mobilenumber': FormControl<String>(validators: [Validators.required]),
+    'mobilenumber': FormControl<String>(validators: [Validators.required,Validators.pattern(r'^\d{10}$')]),
     'emailid': FormControl<String>(validators: [Validators.required]),
     'address': FormControl<String>(validators: [Validators.required]),
     'addressline1': FormControl<String>(validators: [Validators.required]),
     'state': FormControl<String>(validators: [Validators.required]),
     'city': FormControl<String>(validators: [Validators.required]),
-    'pincode': FormControl<String>(validators: [Validators.required]),
+    'pincode': FormControl<String>(validators: [Validators.required,Validators.pattern(r'^\d{6}$')]),
     'guarantorapplicable': FormControl<String>(validators: [Validators.required]),
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Personal Details"),
-      ),
+      appBar: AppBar(title: Text("Personal Details")),
       body: ReactiveForm(
         formGroup: form,
         child: SingleChildScrollView(
           child: Column(
             children: [
-             Dropdown(
-                controlName: 'customertype',
-                label: 'Customer Type',
-                items: ['Existing Customer', 'New Customer'],
-              ),
               Dropdown(
-                controlName: 'constitution',
+                controlName: 'customertype', 
+                label: 'Customer Type', 
+                items: ['Existing Customer', 'New Customer']),
+              Dropdown(
+                controlName: 'constitution', 
                 label: 'Constitution',
-                items: ['HUF', 'Individual', 'LLP', 'Partnership', 'Private Ltd', 
-                'Propiertorship', 'Public Ltd', 'Trust'],
-              ),
+                items: ['HUF', 'Individual', 'LLP', 'Partnership', 
+                'Private Ltd', 'Propiertorship', 'Public Ltd', 'Trust']),
               Dropdown(
-                controlName: 'leadcategory',
-                label: 'Lead Category',
-                items: ['Cold', 'Hot', 'Warm'],
-              ),
+                controlName: 'leadcategory', 
+                label: 'Lead Category', 
+                items: ['Cold', 'Hot', 'Warm']),
               Dropdown(
-                controlName: 'title',
-                label: 'Title',
-                items: ['COLONEL', 'DR', 'LT.COL', 'M/S', 'MAJOR', 'MASTER(MINOR)',
-                'MESSERS', 'MIGRATION DEFAULT', 'MISS', 'MOHAMMAD', 'MR', 'MRS', 
-                'MX', 'SHEIKH', 'SIR'],
-              ),
+                controlName: 'title', 
+                label: 'Title', 
+                items: ['COLONEL', 'DR', 'LT.COL', 'M/S', 'MAJOR', 
+                'MASTER(MINOR)', 'MESSERS', 'MIGRATION DEFAULT', 'MISS', 
+                'MOHAMMAD', 'MR', 'MRS', 'MX', 'SHEIKH', 'SIR']),
               TextField('mobilenumber', 'Mobile Number', isNumber: true),
               TextField('emailid', 'Email Id'),
               TextField('address', 'Address'),
@@ -64,6 +59,7 @@ class PersonalDetailsPage extends StatelessWidget {
               TextField('state', 'State'),
               TextField('city', 'City'),
               TextField('pincode', 'Pincode', isNumber: true),
+
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Row(
@@ -85,18 +81,29 @@ class PersonalDetailsPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 12),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GuarantorPage(title: 'test','test')),
+                    ReactiveValueListenableBuilder<String>(
+                      formControlName: 'guarantorapplicable',
+                      builder: (context, control, child) {
+                        final isEnabled = control.value == 'Yes';
+                        return ElevatedButton(
+                          onPressed: isEnabled
+                              ? () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => GuarantorPage(title: 'test','test'),
+                                    ),
+                                  );
+                                }
+                              : null,
+                          child: Text("+"),
                         );
                       },
-                      child: Text("+"),
                     ),
                   ],
                 ),
               ),
+
               SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
@@ -119,39 +126,17 @@ class PersonalDetailsPage extends StatelessWidget {
       ),
     );
   }
-
-  Widget Dropdown({
-    required String controlName,
-    required String label,
-    required List<String> items,
-  }) {
-    return Padding(
-      padding: EdgeInsets.all(16),
-      child: ReactiveDropdownField<String>(
-        formControlName: controlName,
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: '--Select--',
-        ),
-        items: items
-            .map((e) => DropdownMenuItem<String>(
-                  value: e,
-                  child: Text(e),
-                ))
-            .toList(),
-      ),
-    );
-  }
-
+  
   Widget TextField(String controlName, String label, {bool isNumber = false}) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ReactiveTextField<String>(
         formControlName: controlName,
-        keyboardType: isNumber ? TextInputType.number : TextInputType.text,  
-        inputFormatters: isNumber
-            ? [FilteringTextInputFormatter.digitsOnly] 
-            : [],
+        keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+        inputFormatters: isNumber ? [FilteringTextInputFormatter.digitsOnly] : [],
+        validationMessages: {
+          ValidationMessage.pattern: (error)=>'Enter the valid number of digits'
+        },
         decoration: InputDecoration(
           labelText: label,
         ),

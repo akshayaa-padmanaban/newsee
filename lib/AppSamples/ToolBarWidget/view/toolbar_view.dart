@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsee/AppData/globalconfig.dart';
-import 'package:newsee/pages/kyc_page.dart';
 import 'package:newsee/pages/loan_details_page.dart';
+import 'package:newsee/pages/kyc_page.dart';
 import 'package:newsee/pages/personal_details_page.dart';
 import 'package:newsee/pages/sourcing_page.dart';
 import 'package:newsee/widgets/side_navigation.dart';

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:newsee/widgets/dropdown.dart';
+import 'package:newsee/widgets/integer_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:flutter/services.dart';
 
 class IncomeDetailsPage extends StatelessWidget {
   final String title;
@@ -63,52 +64,11 @@ class IncomeDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget Dropdown({
-    required String controlName,
-    required String label,
-    required List<String> items,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: ReactiveDropdownField<String>(
-        formControlName: controlName,
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: '--Select--',
-        ),
-        items: items
-            .map(
-              (e) => DropdownMenuItem<String>(
-                value: e,
-                child: Text(e),
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
   Widget TextField(String controlName, String label) {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: ReactiveTextField<String>(
         formControlName: controlName,
-        decoration: InputDecoration(
-          labelText: label,
-        ),
-      ),
-    );
-  }
-
-  Widget IntegerTextField(String controlName, String label) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: ReactiveTextField<String>(
-        formControlName: controlName,
-        keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly,
-        ],
         decoration: InputDecoration(
           labelText: label,
         ),
