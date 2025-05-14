@@ -10,19 +10,25 @@ class SourcingPage extends StatelessWidget {
   SourcingPage(String s, {required this.title, Key? key}) : super(key: key);
 
   final form = FormGroup({
-    'businessdescription': FormControl<String>(validators: [Validators.required]),
-    'sourcingchannel': FormControl<String>(validators: [Validators.required]),
-    'sourcingid': FormControl<String>(validators: [Validators.required]),
-    'sourcingname': FormControl<String>(validators: [Validators.required]),
-    'preferredbranch': FormControl<String>(validators: [Validators.required]),
-    'branchcode': FormControl<String>(validators: [Validators.required]),
-    'leadgeneratedby': FormControl<String>(validators: [Validators.required]),
-    'leadid': FormControl<String>(validators: [Validators.required]),
-    'customername': FormControl<String>(validators: [Validators.required]),
-    'dateofbirth': FormControl<String>(validators: [Validators.required]),
-    'mobilenumber': FormControl<String>(validators: [Validators.required,Validators.pattern(r'^\d{10}$')]),
-    'productinterest': FormControl<String>(validators: [Validators.required]),
-  });
+  'businessdescription': FormControl<String>(validators: [Validators.required]),
+  'sourcingchannel': FormControl<String>(validators: [Validators.required]),
+  'sourcingid': FormControl<String>(validators: [Validators.required]),
+  'sourcingname': FormControl<String>(validators: [Validators.required]),
+  'preferredbranch': FormControl<String>(validators: [Validators.required]),
+  'branchcode': FormControl<String>(validators: [Validators.required,],),
+  'leadgeneratedby': FormControl<String>(validators: [Validators.required]),
+  'leadid': FormControl<String>(validators: [Validators.required]),
+  'customername': FormControl<String>(validators: [Validators.required]),
+  'dateofbirth': FormControl<String>(validators: [Validators.required]),
+  'mobilenumber': FormControl<String>(
+    validators: [
+      Validators.required,
+      Validators.pattern(r'^\d{10}$'),
+    ],
+  ),
+  'productinterest': FormControl<String>(validators: [Validators.required]),
+});
+
 
   @override
   Widget build(BuildContext context) {
