@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:newsee/widgets/dropdown.dart';
+import 'package:newsee/widgets/custom_text_field.dart';
+import 'package:newsee/widgets/drop_down.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:newsee/pages/guarantor_page.dart';
 
@@ -14,13 +14,13 @@ class PersonalDetailsPage extends StatelessWidget {
     'constitution': FormControl<String>(validators: [Validators.required]),
     'leadcategory': FormControl<String>(validators: [Validators.required]),
     'title': FormControl<String>(validators: [Validators.required]),
-    'mobilenumber': FormControl<String>(validators: [Validators.required,Validators.pattern(r'^\d{10}$')]),
+    'mobilenumber': FormControl<String>(validators: [Validators.required]),
     'emailid': FormControl<String>(validators: [Validators.required]),
     'address': FormControl<String>(validators: [Validators.required]),
     'addressline1': FormControl<String>(validators: [Validators.required]),
     'state': FormControl<String>(validators: [Validators.required]),
     'city': FormControl<String>(validators: [Validators.required]),
-    'pincode': FormControl<String>(validators: [Validators.required,Validators.pattern(r'^\d{6}$')]),
+    'pincode': FormControl<String>(validators: [Validators.required]),
     'guarantorapplicable': FormControl<String>(validators: [Validators.required]),
   });
 
@@ -52,13 +52,13 @@ class PersonalDetailsPage extends StatelessWidget {
                 items: ['COLONEL', 'DR', 'LT.COL', 'M/S', 'MAJOR', 
                 'MASTER(MINOR)', 'MESSERS', 'MIGRATION DEFAULT', 'MISS', 
                 'MOHAMMAD', 'MR', 'MRS', 'MX', 'SHEIKH', 'SIR']),
-              TextField('mobilenumber', 'Mobile Number', isNumber: true),
-              TextField('emailid', 'Email Id'),
-              TextField('address', 'Address'),
-              TextField('addressline1', 'Address Line 1'),
-              TextField('state', 'State'),
-              TextField('city', 'City'),
-              TextField('pincode', 'Pincode', isNumber: true),
+              CustomTextField('mobilenumber', 'Mobile Number'),
+              CustomTextField('emailid', 'Email Id'),
+              CustomTextField('address', 'Address'),
+              CustomTextField('addressline1', 'Address Line 1'),
+              CustomTextField('state', 'State'),
+              CustomTextField('city', 'City'),
+              CustomTextField('pincode', 'Pincode'),
 
               Padding(
                 padding: const EdgeInsets.all(16),
@@ -122,23 +122,6 @@ class PersonalDetailsPage extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-  
-  Widget TextField(String controlName, String label, {bool isNumber = false}) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: ReactiveTextField<String>(
-        formControlName: controlName,
-        keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-        inputFormatters: isNumber ? [FilteringTextInputFormatter.digitsOnly] : [],
-        validationMessages: {
-          ValidationMessage.pattern: (error)=>'Enter the valid number of digits'
-        },
-        decoration: InputDecoration(
-          labelText: label,
         ),
       ),
     );

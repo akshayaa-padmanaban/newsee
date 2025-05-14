@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-Widget IntegerTextField(String controlName, String label) {
+Widget Dropdown({
+  required String controlName,
+  required String label,
+  required List<String> items,
+}) {
   return Padding(
-    padding: const EdgeInsets.all(16),
-    child: ReactiveTextField<String>(
+    padding: EdgeInsets.all(16),
+    child: ReactiveDropdownField<String>(
       formControlName: controlName,
-      keyboardType: TextInputType.number,
-      inputFormatters: [
-        FilteringTextInputFormatter.digitsOnly,
-      ],
-      validationMessages: {
-        ValidationMessage.pattern: (error) => 'Enter the valid number',
-      },
       decoration: InputDecoration(
         label: RichText(
           text: TextSpan(
@@ -27,7 +23,14 @@ Widget IntegerTextField(String controlName, String label) {
             ],
           ),
         ),
+        hintText: '--Select--',
       ),
+      items: items
+          .map((e) => DropdownMenuItem<String>(
+                value: e,
+                child: Text(e),
+              ))
+          .toList(),
     ),
   );
 }

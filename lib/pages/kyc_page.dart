@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:newsee/widgets/dropdown.dart';
+import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
+import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:flutter/services.dart';
 
 class KycPage extends StatelessWidget {
   final String title;
@@ -33,15 +33,9 @@ class KycPage extends StatelessWidget {
                 label: 'Applicant Type',
                 items: ['', ''],
               ),
-              TextField('panno','PAN No',
-                onIconTap: () {},
+              CustomTextField('panno','PAN No',
               ),
-              TextField('aadhaarno','Aadhaar No',
-                onIconTap: () {},
-                keyboardType: TextInputType.number, 
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly, 
-                ],
+              CustomTextField('aadhaarno','Aadhaar No',
               ),
               Dropdown(
                 controlName: 'otheridproof',
@@ -73,42 +67,6 @@ class KycPage extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget TextField(
-    String controlName,
-    String label, {
-    VoidCallback? onIconTap,
-    TextInputType keyboardType = TextInputType.text,
-    List<TextInputFormatter>? inputFormatters,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: ReactiveTextField<String>(
-        formControlName: controlName,
-        keyboardType: keyboardType,
-        inputFormatters: inputFormatters,
-        decoration: InputDecoration(
-          labelText: label,
-          suffixIcon: onIconTap != null
-              ? Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: Size(60, 40),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                    ),
-                    onPressed: onIconTap,
-                    child: Icon(Icons.camera_alt, size: 20),
-                  ),
-                )
-              : null,
         ),
       ),
     );

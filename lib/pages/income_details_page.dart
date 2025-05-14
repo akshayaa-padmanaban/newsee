@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:newsee/widgets/dropdown.dart';
+import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
+import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class IncomeDetailsPage extends StatelessWidget {
@@ -32,16 +33,15 @@ class IncomeDetailsPage extends StatelessWidget {
               Dropdown(
                 controlName: 'occupation',
                 label: 'Occupation',
-                items: ['Agriculturalist', 'Business', 'Chartered Accountant',
-                'Ex Servicemen', 'Others', 'Pensioner', 'Prof/Self Employed',
-                'Salaried'],
+                items: ['Agriculturalist', 'Business', 'Chartered Accountant', 'Ex Servicemen', 'Others',
+                  'Pensioner', 'Prof/Self Employed', 'Salaried'],
               ),
-              IntegerTextField('grossincome','Gross Income/Salary(₹) (Per Month)'),
-              IntegerTextField('grossmonthly','Gross Monthly Deductions(₹) (Per Month)'),
-              IntegerTextField('netincome','Net Income(₹) (Per Year)'),
-              IntegerTextField('networth','Networth of the Applicant(₹)'),
-              TextField('company', 'Company'),
-              IntegerTextField('totalyears','Total Years of Employment'),
+              IntegerTextField('grossincome', 'Gross Income/Salary(₹) (Per Month)'),
+              IntegerTextField('grossmonthly', 'Gross Monthly Deductions(₹) (Per Month)'),
+              IntegerTextField('netincome', 'Net Income(₹) (Per Year)'),
+              IntegerTextField('networth', 'Networth of the Applicant(₹)'),
+              CustomTextField('company', 'Company'),
+              IntegerTextField('totalyears', 'Total Years of Employment'),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
@@ -59,18 +59,6 @@ class IncomeDetailsPage extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget TextField(String controlName, String label) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: ReactiveTextField<String>(
-        formControlName: controlName,
-        decoration: InputDecoration(
-          labelText: label,
         ),
       ),
     );

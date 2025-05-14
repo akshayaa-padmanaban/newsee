@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:newsee/widgets/dropdown.dart';
+import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class LoanDetailsPage extends StatelessWidget {
   final String title;
 
-  LoanDetailsPage(String s, {required this.title, super.key});
+  LoanDetailsPage(String s, {super.key, required this.title});
 
   final form = FormGroup({
     'maincategory': FormControl<String>(validators: [Validators.required]),
@@ -59,18 +59,6 @@ class LoanDetailsPage extends StatelessWidget {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget TextField(String controlName, String label) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: ReactiveTextField<String>(
-        formControlName: controlName,
-        decoration: InputDecoration(
-          labelText: label,
         ),
       ),
     );
