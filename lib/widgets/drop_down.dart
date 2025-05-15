@@ -10,6 +10,9 @@ Widget Dropdown({
     padding: EdgeInsets.all(16),
     child: ReactiveDropdownField<String>(
       formControlName: controlName,
+      validationMessages: {
+        ValidationMessage.required: (error) => '$label is required',
+      },
       decoration: InputDecoration(
         label: RichText(
           text: TextSpan(

@@ -6,6 +6,9 @@ Widget CustomTextField(String controlName, String label) {
     padding: const EdgeInsets.all(16),
     child: ReactiveTextField<String>(
       formControlName: controlName,
+      validationMessages: {
+        ValidationMessage.required: (error) => '$label is required',
+      },
       decoration: InputDecoration(
         label: RichText(
           text: TextSpan(

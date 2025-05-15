@@ -39,8 +39,8 @@ class IntegerTextField extends StatelessWidget {
         ),
         ),
         validationMessages: {
-          ValidationMessage.required: (_) => 'This field is required',
-        },
+        ValidationMessage.required: (error) => '$label is required',
+      },
       ),
     );
   }

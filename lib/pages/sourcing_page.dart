@@ -74,6 +74,8 @@ class SourcingPage extends StatelessWidget {
                 padding: const EdgeInsets.all(12.0),
                 child: ReactiveTextField<String>(
                   formControlName: 'dateofbirth',
+                  validationMessages: {
+                    ValidationMessage.required: (error) => 'Date of Birth is required',},
                   readOnly: true,
                   decoration: InputDecoration(
                     labelText: 'Date Of Birth',
