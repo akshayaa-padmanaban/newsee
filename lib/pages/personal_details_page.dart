@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/drop_down.dart';
+import 'package:newsee/widgets/searchable_drop_down.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:newsee/pages/guarantor_page.dart';
 
@@ -46,7 +47,7 @@ class PersonalDetailsPage extends StatelessWidget {
                 controlName: 'leadcategory', 
                 label: 'Lead Category', 
                 items: ['Cold', 'Hot', 'Warm']),
-              Dropdown(
+              SearchableDropdown(
                 controlName: 'title', 
                 label: 'Title', 
                 items: ['COLONEL', 'DR', 'LT.COL', 'M/S', 'MAJOR', 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
+import 'package:newsee/widgets/searchable_drop_down.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class GuarantorPage extends StatelessWidget {
@@ -33,7 +34,7 @@ class GuarantorPage extends StatelessWidget {
                 label: 'Applicant Type',
                 items: ['Co-Applicant', 'Guarantor'],
               ),
-              Dropdown(
+              SearchableDropdown(
                 controlName: 'title',
                 label: 'Title',
                 items: ['COLONEL', 'DR', 'LT.COL', 'M/S', 'MAJOR', 'MASTER(MINOR)',

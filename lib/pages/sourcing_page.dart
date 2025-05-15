@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
+import 'package:newsee/widgets/searchable_drop_down.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class SourcingPage extends StatelessWidget {
@@ -53,7 +54,7 @@ class SourcingPage extends StatelessWidget {
               ),
               IntegerTextField('sourcingid', 'Sourcing ID'),
               CustomTextField('sourcingname', 'Sourcing Name'),
-              Dropdown(
+              SearchableDropdown(
                 controlName: 'preferredbranch',
                 label: 'Preferred Branch',
                 items: ['AMTA', 'ASHOKENAGAR', 'BADU', 'BAGMORE', 
@@ -95,7 +96,7 @@ class SourcingPage extends StatelessWidget {
                 ),
               ),
               IntegerTextField('mobilenumber', 'Mobile Number'),
-              Dropdown(
+              SearchableDropdown(
                 controlName: 'productinterest',
                 label: 'Product Interest',
                 items: ['Car Loan', 'Cash Loan', 'Combo Car Loan', 
