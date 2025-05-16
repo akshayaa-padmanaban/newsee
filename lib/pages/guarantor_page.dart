@@ -7,7 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class GuarantorPage extends StatelessWidget {
   final String title;
 
-  GuarantorPage(String s, {required this.title, Key? key}) : super(key: key);
+  GuarantorPage(String s, {required this.title, super.key});
 
   final form = FormGroup({
     'applicanttype': FormControl<String>(validators: [Validators.required]),

@@ -11,7 +11,7 @@ Widget Dropdown({
     child: ReactiveDropdownField<String>(
       formControlName: controlName,
       validationMessages: {
-        ValidationMessage.required: (error) => '$label is required',
+        ValidationMessage.required: (error) => '$label is required', 
       },
       decoration: InputDecoration(
         label: RichText(

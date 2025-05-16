@@ -11,8 +11,8 @@ class SearchableDropdown extends StatelessWidget {
     required this.controlName,
     required this.label,
     required this.items,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,6 @@ class SearchableDropdown extends StatelessWidget {
       builder: (field) {
         return Padding(
           padding: const EdgeInsets.all(12),
-          child: Container(
             child: DropdownSearch<String>(
               items: items,
               selectedItem: field.value,
@@ -46,6 +45,7 @@ class SearchableDropdown extends StatelessWidget {
               popupProps: PopupProps.menu(
                 showSearchBox: true,
                 searchFieldProps: TextFieldProps(
+                  autofocus: true,
                   decoration: const InputDecoration(
                     hintText: 'Search',
                     border: UnderlineInputBorder(),
@@ -54,8 +54,7 @@ class SearchableDropdown extends StatelessWidget {
               ),
               onChanged: (value) => field.didChange(value),
             ),
-          ),
-        );
+          );
       },
     );
   }

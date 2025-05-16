@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
+import 'package:newsee/widgets/searchable_drop_down.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class LoanDetailsPage extends StatelessWidget {
@@ -26,10 +27,15 @@ class LoanDetailsPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Dropdown(
+              SearchableDropdown(
                 controlName: 'maincategory',
                 label: 'Main Category',
-                items: ['', ''],
+                items: ['Car Loan', 'Cash Loan', 'Combo Car Loan', 'Corporate Car Loan',
+                'Corporate Home Loan', 'Educational Loan', 'Gold Loan', 'Gold Loan Staff Retail',
+                'Housing Loan', 'Loan Against Deposit for Individuals', 'Loan Against Deposit for Non Individuals',
+                'MSME PM VISHWAKARMA', 'PMSVANIDHI WC', 'pensioner Loan', 'Property Loan', 'Rent Loan',
+                'Security Loan', 'Shopper Loan', 'Simplified Gold Loan', 'Simplified Gold Loan MSME',
+                'Staff Housing Loan', 'Staff Overdraft New','Staff Vehicle Loan'],
               ),
               Dropdown(
                 controlName: 'subcategory',
