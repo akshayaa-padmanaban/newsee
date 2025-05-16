@@ -25,6 +25,7 @@ class KycPage extends StatelessWidget {
       ),
       body: ReactiveForm(
         formGroup: form,
+        child:SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -33,10 +34,8 @@ class KycPage extends StatelessWidget {
                 label: 'Applicant Type',
                 items: ['', ''],
               ),
-              CustomTextField('panno','PAN No',
-              ),
-              CustomTextField('aadhaarno','Aadhaar No',
-              ),
+              CustomTextField('panno','PAN No'),
+              IntegerTextField('aadhaarno','Aadhaar No'),
               Dropdown(
                 controlName: 'otheridproof',
                 label: 'Other ID Proof',
@@ -62,11 +61,15 @@ class KycPage extends StatelessWidget {
                       form.markAllAsTouched();
                     }
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white
+                  ),
                   child: Text('Next'),
                 ),
               ),
             ],
           ),
+        ),
         ),
       ),
     );

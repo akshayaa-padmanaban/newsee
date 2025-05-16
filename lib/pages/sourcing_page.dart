@@ -8,7 +8,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class SourcingPage extends StatelessWidget {
   final String title;
 
-  SourcingPage(String s, {required this.title, Key? key}) : super(key: key);
+  SourcingPage(String s, {required this.title, super.key});
 
   final form = FormGroup({
   'businessdescription': FormControl<String>(validators: [Validators.required]),
@@ -16,17 +16,12 @@ class SourcingPage extends StatelessWidget {
   'sourcingid': FormControl<String>(validators: [Validators.required]),
   'sourcingname': FormControl<String>(validators: [Validators.required]),
   'preferredbranch': FormControl<String>(validators: [Validators.required]),
-  'branchcode': FormControl<String>(validators: [Validators.required,],),
+  'branchcode': FormControl<String>(validators: [Validators.required]),
   'leadgeneratedby': FormControl<String>(validators: [Validators.required]),
   'leadid': FormControl<String>(validators: [Validators.required]),
   'customername': FormControl<String>(validators: [Validators.required]),
   'dateofbirth': FormControl<String>(validators: [Validators.required]),
-  'mobilenumber': FormControl<String>(
-    validators: [
-      Validators.required,
-      Validators.pattern(r'^\d{10}$'),
-    ],
-  ),
+  'mobilenumber': FormControl<String>(validators: [Validators.required]),
   'productinterest': FormControl<String>(validators: [Validators.required]),
 });
 
@@ -39,6 +34,7 @@ class SourcingPage extends StatelessWidget {
       ),
       body: ReactiveForm(
         formGroup: form,
+        child: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -128,6 +124,7 @@ class SourcingPage extends StatelessWidget {
 
             ],
           ),
+        ),
         ),
       ),
     );

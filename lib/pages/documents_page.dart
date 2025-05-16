@@ -20,6 +20,7 @@ class DocumentsPage extends StatelessWidget {
        ),
       body: ReactiveForm(
         formGroup: form,
+        child: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -57,6 +58,7 @@ class DocumentsPage extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );

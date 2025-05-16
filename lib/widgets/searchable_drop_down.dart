@@ -1,3 +1,12 @@
+
+/*
+ @created on : May 16,2025
+ @author : Akshayaa 
+ Description : A reusable widget that provides a searchable dropdown integrated with the reactive form.
+               controlName is the name of the form control tied to this dropdown. label is displayed as the input label.
+               items are the list of selectable string options.
+*/
+
 import 'package:flutter/material.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -11,7 +20,6 @@ class SearchableDropdown extends StatelessWidget {
     required this.controlName,
     required this.label,
     required this.items,
-    super.key,
   });
 
   @override

@@ -7,7 +7,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 class IncomeDetailsPage extends StatelessWidget {
   final String title;
 
-  IncomeDetailsPage(String s, {required this.title, Key? key}) : super(key: key);
+  IncomeDetailsPage(String s, {required this.title, super.key});
 
   final form = FormGroup({
     'occupation': FormControl<String>(validators: [Validators.required]),
@@ -27,6 +27,7 @@ class IncomeDetailsPage extends StatelessWidget {
       ),
       body: ReactiveForm(
         formGroup: form,
+        child: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -59,6 +60,7 @@ class IncomeDetailsPage extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );

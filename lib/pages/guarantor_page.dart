@@ -14,7 +14,7 @@ class GuarantorPage extends StatelessWidget {
     'title': FormControl<String>(validators: [Validators.required]),
     'firstname': FormControl<String>(validators: [Validators.required]),
     'lastname': FormControl<String>(validators: [Validators.required]),
-    'mobilenumber': FormControl<String>(validators: [Validators.required,Validators.pattern(r'^\d{10}$')]),
+    'mobilenumber': FormControl<String>(validators: [Validators.required]),
     'networth': FormControl<String>(validators: [Validators.required]),
   });
 
@@ -26,6 +26,7 @@ class GuarantorPage extends StatelessWidget {
       ),
       body: ReactiveForm(
         formGroup: form,
+        child: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -56,6 +57,7 @@ class GuarantorPage extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }

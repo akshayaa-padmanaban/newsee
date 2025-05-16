@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/drop_down.dart';
+import 'package:newsee/widgets/integer_text_field.dart';
 import 'package:newsee/widgets/searchable_drop_down.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:newsee/pages/guarantor_page.dart';
@@ -8,7 +9,7 @@ import 'package:newsee/pages/guarantor_page.dart';
 class PersonalDetailsPage extends StatelessWidget {
   final String title;
 
-  PersonalDetailsPage(String s, {required this.title, Key? key}) : super(key: key);
+  PersonalDetailsPage(String s, {required this.title, super.key});
 
   final form = FormGroup({
     'customertype': FormControl<String>(validators: [Validators.required]),
@@ -16,7 +17,7 @@ class PersonalDetailsPage extends StatelessWidget {
     'leadcategory': FormControl<String>(validators: [Validators.required]),
     'title': FormControl<String>(validators: [Validators.required]),
     'mobilenumber': FormControl<String>(validators: [Validators.required]),
-    'emailid': FormControl<String>(validators: [Validators.required]),
+    'emailid': FormControl<String>(validators: [Validators.email]),
     'address': FormControl<String>(validators: [Validators.required]),
     'addressline1': FormControl<String>(validators: [Validators.required]),
     'state': FormControl<String>(validators: [Validators.required]),
@@ -31,6 +32,7 @@ class PersonalDetailsPage extends StatelessWidget {
       appBar: AppBar(title: Text("Personal Details")),
       body: ReactiveForm(
         formGroup: form,
+        child: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -53,13 +55,20 @@ class PersonalDetailsPage extends StatelessWidget {
                 items: ['COLONEL', 'DR', 'LT.COL', 'M/S', 'MAJOR', 
                 'MASTER(MINOR)', 'MESSERS', 'MIGRATION DEFAULT', 'MISS', 
                 'MOHAMMAD', 'MR', 'MRS', 'MX', 'SHEIKH', 'SIR']),
-              CustomTextField('mobilenumber', 'Mobile Number'),
+              IntegerTextField('mobilenumber', 'Mobile Number'),
               CustomTextField('emailid', 'Email Id'),
               CustomTextField('address', 'Address'),
               CustomTextField('addressline1', 'Address Line 1'),
-              CustomTextField('state', 'State'),
-              CustomTextField('city', 'City'),
-              CustomTextField('pincode', 'Pincode'),
+              SearchableDropdown(
+                controlName: 'state',
+                label: 'State',
+                items: ['Tamil Nadu','Kerala','Karnataka']),
+              SearchableDropdown(
+                controlName: 'city',
+                label: 'City',
+                items: ['Chennai','Madurai','Bangalore']
+              ),
+              IntegerTextField('pincode', 'Pincode'),
 
               Padding(
                 padding: const EdgeInsets.all(16),
@@ -123,6 +132,7 @@ class PersonalDetailsPage extends StatelessWidget {
               ),
             ],
           ),
+        ),
         ),
       ),
     );
