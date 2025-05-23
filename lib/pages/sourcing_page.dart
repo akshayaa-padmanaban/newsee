@@ -5,6 +5,7 @@ import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/drop_down.dart';
 import 'package:newsee/widgets/integer_text_field.dart';
 import 'package:newsee/widgets/searchable_drop_down.dart';
+import 'package:newsee/widgets/status_pill.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class SourcingPage extends StatelessWidget {
@@ -36,9 +37,7 @@ class SourcingPage extends StatelessWidget {
           (context) => SaveleadBloc(
             LeadSourcingState(status: null, sourcingdetails: null),
           ),
-      child: Scaffold(
-        appBar: AppBar(title: Text("Sourcing Details")),
-        body: BlocListener<SaveleadBloc, LeadSourcingState>(
+      child: BlocListener<SaveleadBloc, LeadSourcingState>(
           bloc: SaveleadBloc(
             LeadSourcingState(status: LeadStatus.init, sourcingdetails: null),
           ),
@@ -60,12 +59,33 @@ class SourcingPage extends StatelessWidget {
           },
           child: BlocBuilder<SaveleadBloc, LeadSourcingState>(
             builder: (context, state) {
-              state.status == LeadStatus.success
-                  ? form.controls['leadid']?.patchValue(
-                    state.sourcingdetails?.leadID,
-                  )
-                  : print('Failure');
-              return ReactiveForm(
+              if(state.status == LeadStatus.success){
+                form.controls['leadid']?.patchValue(
+                    state.sourcingdetails?.leadID);
+              }
+              FormStatus formStatus;
+              switch(state.status)
+              {
+                case LeadStatus.init:
+                case LeadStatus.success:
+                  formStatus=FormStatus.completed;
+                case LeadStatus.failure:
+                  formStatus=FormStatus.pending;
+                default:
+                  formStatus=FormStatus.none;
+              }
+              return Scaffold(
+            appBar: AppBar(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Sourcing Details"),
+                  StatusPill(formStatus: formStatus),
+                ],
+              ),
+            ),
+
+              body: ReactiveForm(
                 formGroup: form,
                 child: SafeArea(
                   child: SingleChildScrollView(
@@ -219,11 +239,11 @@ class SourcingPage extends StatelessWidget {
                     ),
                   ),
                 ),
+              ),
               );
             },
           ),
         ),
-      ),
-    );
+      );
   }
 }
