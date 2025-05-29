@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newsee/AppData/app_forms.dart';
+import 'package:newsee/AppData/app_lov_constants.dart';
 import 'package:newsee/feature/savelead/presentation/bloc/savelead_sourcing_bloc.dart';
 import 'package:newsee/widgets/custom_text_field.dart';
 import 'package:newsee/widgets/drop_down.dart';
@@ -13,22 +15,7 @@ class SourcingPage extends StatelessWidget {
 
   SourcingPage(String s, {required this.title, super.key});
 
-  final form = FormGroup({
-    'businessdescription': FormControl<String>(
-      validators: [Validators.required],
-    ),
-    'sourcingchannel': FormControl<String>(validators: [Validators.required]),
-    'sourcingid': FormControl<String>(validators: [Validators.required]),
-    'sourcingname': FormControl<String>(validators: [Validators.required]),
-    'preferredbranch': FormControl<String>(validators: [Validators.required]),
-    'branchcode': FormControl<String>(validators: [Validators.required]),
-    'leadgeneratedby': FormControl<String>(validators: [Validators.required]),
-    'leadid': FormControl<String>(validators: [Validators.required]),
-    'customername': FormControl<String>(validators: [Validators.required]),
-    'dateofbirth': FormControl<String>(validators: [Validators.required]),
-    'mobilenumber': FormControl<String>(validators: [Validators.required]),
-    'productinterest': FormControl<String>(validators: [Validators.required]),
-  });
+  final form = AppForms.SOURCING_DETAILS_FORM;
 
   @override
   Widget build(BuildContext context) {
@@ -112,39 +99,7 @@ class SourcingPage extends StatelessWidget {
                         SearchableDropdown(
                           controlName: 'preferredbranch',
                           label: 'Preferred Branch',
-                          items: [
-                            'AMTA',
-                            'ASHOKENAGAR',
-                            'BADU',
-                            'BAGMORE',
-                            'BAGNAN',
-                            'BAGUIATI-KOLKATA',
-                            'BAKSHARA-HOWRAH',
-                            'BAKULTALA',
-                            'BALLY GOSWAMIPARA',
-                            'BALTIKURI-HOWRAH',
-                            'BAMUNGACHI',
-                            'BANIPUR',
-                            'BANITABLA',
-                            'BANKRA-HOWRAH',
-                            'BARASAT',
-                            'BARGACHIA',
-                            'BEGRI',
-                            'BELGHARIA',
-                            'BELIAGHATA BRIDGE',
-                            'BELLILIOUS ROAD',
-                            'BESU',
-                            'BINDHANNAGAR',
-                            'BILKANDA',
-                            'BONGAON',
-                            'CHANDPORE',
-                            'DAKSHIN JHAPARDA',
-                            'DAKSHIN JOYPUR',
-                            'DAKSHINESWAR',
-                            'DUM DUM-KOLKATA',
-                            'GARIA-KOLKATA',
-                            'HABRA',
-                          ],
+                          items: AppLovConstants.branches,
                         ),
                         IntegerTextField('branchcode', 'Branch Code'),
                         IntegerTextField(
@@ -189,23 +144,7 @@ class SourcingPage extends StatelessWidget {
                         SearchableDropdown(
                           controlName: 'productinterest',
                           label: 'Product Interest',
-                          items: [
-                            'Car Loan',
-                            'Cash Loan',
-                            'Combo Car Loan',
-                            'Corporate Car Loan',
-                            'Corporate Home Loan',
-                            'Educational Loan',
-                            'Housing Loan',
-                            'Pensioner Loan',
-                            'Property Loan',
-                            'Rent Loan',
-                            'UCO Survodaya Loan Scheme',
-                            'Two Wheeler Loan',
-                            'UCO Electric Vehicle Loan',
-                            'UCO Electric Vehicle EV Loan',
-                            'UCO Elite Two Wheeler Loan',
-                          ],
+                          items: AppLovConstants.products,
                         ),
                         SizedBox(height: 20),
                         Center(

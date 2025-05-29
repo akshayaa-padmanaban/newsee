@@ -1,4 +1,3 @@
-
 /*
  @created on : May 16,2025
  @author : Akshayaa 
@@ -14,15 +13,13 @@ Widget Dropdown({
   required String controlName,
   required String label,
   required List<String> items,
-}) 
-
-{
+}) {
   return Padding(
     padding: EdgeInsets.all(16),
     child: ReactiveDropdownField<String>(
       formControlName: controlName,
       validationMessages: {
-        ValidationMessage.required: (error) => '$label is required', 
+        ValidationMessage.required: (error) => '$label is required',
       },
       decoration: InputDecoration(
         label: RichText(
@@ -30,21 +27,16 @@ Widget Dropdown({
             text: label,
             style: TextStyle(color: Colors.black, fontSize: 16),
             children: [
-              TextSpan(
-                text: ' *',
-                style: TextStyle(color: Colors.red),
-              ),
+              TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
             ],
           ),
         ),
         hintText: '--Select--',
       ),
-      items: items
-          .map((e) => DropdownMenuItem<String>(
-                value: e,
-                child: Text(e),
-              ))
-          .toList(),
+      items:
+          items
+              .map((e) => DropdownMenuItem<String>(value: e, child: Text(e)))
+              .toList(),
     ),
   );
 }

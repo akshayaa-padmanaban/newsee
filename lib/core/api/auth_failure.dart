@@ -6,7 +6,7 @@
 
  */
 
-import 'package:newsee/Model/api_core/failure.dart';
+import 'package:newsee/core/api/failure.dart';
 
 class AuthFailure extends Failure {
   AuthFailure({required super.message});

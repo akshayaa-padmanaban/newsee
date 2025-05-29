@@ -9,12 +9,14 @@ class AuthRemoteDatasource {
   /*
   @author     : karthick.d 14/05/2025
   @desc       : login api consumer - dio.post method 
+                datasource directory encapsulated http services and setup like
+                http interceptors etc
   @param      : http request payload
   @return     : Future<Response> Response - > HttpResponse
    */
   loginWithUserAccount(Map<String, dynamic> payload) async {
     Response response = await dio.post(
-      'LoginService',
+      'MobileService/LoginService',
       data: {'Login': payload, 'token': ApiConfig.AUTH_TOKEN},
     );
     return response;

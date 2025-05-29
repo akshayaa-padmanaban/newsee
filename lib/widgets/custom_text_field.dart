@@ -1,4 +1,3 @@
-
 /*
  @created on : May 16,2025
  @author : Akshayaa 
@@ -8,15 +7,14 @@
 import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
-Widget CustomTextField(String controlName, String label) 
-{
+Widget CustomTextField(String controlName, String label) {
   return Padding(
     padding: const EdgeInsets.all(16),
     child: ReactiveTextField<String>(
       formControlName: controlName,
       validationMessages: {
         ValidationMessage.required: (error) => '$label is required',
-        ValidationMessage.email: (error) => 'Enter valid $label'
+        ValidationMessage.email: (error) => 'Enter valid $label',
       },
       decoration: InputDecoration(
         label: RichText(
@@ -24,10 +22,7 @@ Widget CustomTextField(String controlName, String label)
             text: label,
             style: TextStyle(color: Colors.black, fontSize: 16),
             children: [
-              TextSpan(
-                text: ' *',
-                style: TextStyle(color: Colors.red),
-              ),
+              TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
             ],
           ),
         ),

@@ -7,4 +7,8 @@ class AppRouteConstants {
     'name': 'newlead',
     'path': '/newlead',
   };
+  static const RouteProps MASTERS_PAGE = {
+    'name': 'masters',
+    'path': '/masters',
+  };
 }

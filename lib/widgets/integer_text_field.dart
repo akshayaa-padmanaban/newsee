@@ -1,4 +1,3 @@
-
 /*
  @created on : May 16,2025
  @author : Akshayaa 
@@ -16,7 +15,7 @@ class IntegerTextField extends StatelessWidget {
   const IntegerTextField(this.controlName, this.label);
 
   /* Returns the maximum number of digits allowed. If the field is for 'mobilenumber',
-  restricted to 10 digits.*/ 
+  restricted to 10 digits.*/
 
   int getMaxLength() {
     if (controlName == 'mobilenumber') return 10;
@@ -37,23 +36,20 @@ class IntegerTextField extends StatelessWidget {
           LengthLimitingTextInputFormatter(getMaxLength()),
         ],
         decoration: InputDecoration(
-        label: RichText(
-          text: TextSpan(
-            text: label,
-            style: TextStyle(color: Colors.black, fontSize: 16),
-            children: [
-              TextSpan(
-                text: ' *',
-                style: TextStyle(color: Colors.red),
-              ),
-            ],
+          label: RichText(
+            text: TextSpan(
+              text: label,
+              style: TextStyle(color: Colors.black, fontSize: 16),
+              children: [
+                TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
+              ],
+            ),
           ),
         ),
-        ),
         validationMessages: {
-        ValidationMessage.required: (error) => '$label is required',
-        ValidationMessage.pattern: (error) => 'Valid $label is required'
-      },
+          ValidationMessage.required: (error) => '$label is required',
+          ValidationMessage.pattern: (error) => 'Valid $label is required',
+        },
       ),
     );
   }
