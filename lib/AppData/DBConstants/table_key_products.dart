@@ -22,13 +22,14 @@ class TableKeysProducts {
   static const String facilityId = 'lsfFacId';
   static const String facilityDescription = "lsfFacDesc";
   static const String facilityParentId = "lsfFacParentId";
+  static const String facilityType = "lsfFacType";
   static const String vertical = "lsfBizVertical";
-
   static const String createTableQuery = '''
                     CREATE TABLE IF NOT EXISTS $tableName(
             $idColumn INTEGER PRIMARY KEY AUTOINCREMENT,
             $facilityId TEXT,
             $facilityDescription TEXT,
+            $facilityType TEXT,
             $facilityParentId TEXT,
             $vertical TEXT
 )

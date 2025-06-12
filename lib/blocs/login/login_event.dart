@@ -31,9 +31,7 @@ final class LoginFetch extends LoginEvent {
   const LoginFetch({required this.loginRequest});
 }
 
-final class LoginPasswordSecure extends LoginEvent {
-  
-}
+final class LoginPasswordSecure extends LoginEvent {}
 
 // when click login api  responded in login page - LoginSuccess event dispatched
 
@@ -42,3 +40,9 @@ final class LoginSuccess extends LoginEvent {}
 // when click login api  responded with error - LoginError event dispatched
 
 final class LoginError extends LoginEvent {}
+
+// wehn click passwrodSecure event password will be vissible or Hidden
+
+final class LoginSecurePassword extends LoginEvent {
+  
+}

@@ -1,4 +1,3 @@
-
 /*
  @created on : May 16,2025
  @author : Akshayaa 
@@ -22,26 +21,21 @@ class AlphaTextField extends StatelessWidget {
       child: ReactiveTextField<String>(
         formControlName: controlName,
         keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.deny(RegExp('[0-9]'))
-        ],
+        inputFormatters: [FilteringTextInputFormatter.deny(RegExp('[0-9]'))],
         decoration: InputDecoration(
-        label: RichText(
-          text: TextSpan(
-            text: label,
-            style: TextStyle(color: Colors.black, fontSize: 16),
-            children: [
-              TextSpan(
-                text: ' *',
-                style: TextStyle(color: Colors.red),
-              ),
-            ],
+          label: RichText(
+            text: TextSpan(
+              text: label,
+              style: TextStyle(color: Colors.black, fontSize: 16),
+              children: [
+                TextSpan(text: ' *', style: TextStyle(color: Colors.red)),
+              ],
+            ),
           ),
         ),
-        ),
         validationMessages: {
-        ValidationMessage.required: (error) => '$label is required'
-      },
+          ValidationMessage.required: (error) => '$label is required',
+        },
       ),
     );
   }

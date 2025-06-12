@@ -23,12 +23,13 @@ class SearchBarWidget extends StatelessWidget {
         child: Row(
           children: [
             Builder(
-              builder: (context) => IconButton(
-                icon: Icon(Icons.menu, color: Colors.black),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
-              ),
+              builder:
+                  (context) => IconButton(
+                    icon: Icon(Icons.menu, color: Colors.black),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                  ),
             ),
             Expanded(
               child: TextField(

@@ -23,11 +23,13 @@ class Product {
   final String lsfFacDesc;
   final String lsfFacParentId;
   final String lsfBizVertical;
+  final String lsfFacType;
   Product({
     required this.lsfFacId,
     required this.lsfFacDesc,
     required this.lsfFacParentId,
     required this.lsfBizVertical,
+    required this.lsfFacType,
   });
 
   Product copyWith({
@@ -35,12 +37,14 @@ class Product {
     String? lsfFacDesc,
     String? lsfFacParentId,
     String? lsfBizVertical,
+    String? lsfFacType,
   }) {
     return Product(
       lsfFacId: lsfFacId ?? this.lsfFacId,
       lsfFacDesc: lsfFacDesc ?? this.lsfFacDesc,
       lsfFacParentId: lsfFacParentId ?? this.lsfFacParentId,
       lsfBizVertical: lsfBizVertical ?? this.lsfBizVertical,
+      lsfFacType: lsfFacType ?? this.lsfFacType,
     );
   }
 
@@ -50,6 +54,7 @@ class Product {
       'lsfFacDesc': lsfFacDesc,
       'lsfFacParentId': lsfFacParentId,
       'lsfBizVertical': lsfBizVertical,
+      'lsfFacType': lsfFacType,
     };
   }
 
@@ -59,6 +64,7 @@ class Product {
       lsfFacDesc: map['lsfFacDesc'] as String,
       lsfFacParentId: map['lsfFacParentId'] as String,
       lsfBizVertical: map['lsfBizVertical'] as String,
+      lsfFacType: map['lsfFacType'] as String,
     );
   }
 
@@ -69,7 +75,7 @@ class Product {
 
   @override
   String toString() {
-    return 'Product(lsfFacId: $lsfFacId, lsfFacDesc: $lsfFacDesc, lsfFacParentId: $lsfFacParentId, lsfBizVertical: $lsfBizVertical)';
+    return 'Product(lsfFacId: $lsfFacId, lsfFacDesc: $lsfFacDesc, lsfFacParentId: $lsfFacParentId, lsfBizVertical: $lsfBizVertical, lsfFacType:$lsfFacType)';
   }
 
   @override
@@ -79,7 +85,8 @@ class Product {
     return other.lsfFacId == lsfFacId &&
         other.lsfFacDesc == lsfFacDesc &&
         other.lsfFacParentId == lsfFacParentId &&
-        other.lsfBizVertical == lsfBizVertical;
+        other.lsfBizVertical == lsfBizVertical &&
+        other.lsfFacType == lsfFacType;
   }
 
   @override
@@ -87,6 +94,7 @@ class Product {
     return lsfFacId.hashCode ^
         lsfFacDesc.hashCode ^
         lsfFacParentId.hashCode ^
-        lsfBizVertical.hashCode;
+        lsfBizVertical.hashCode ^
+        lsfFacType.hashCode;
   }
 }

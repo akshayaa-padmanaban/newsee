@@ -11,6 +11,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
   lsfFacDesc: json['lsfFacDesc'] as String,
   lsfFacParentId: json['lsfFacParentId'] as String,
   lsfBizVertical: json['lsfBizVertical'] as String,
+  lsfFacType: json['lsfFacType'] as String,
 );
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
@@ -18,4 +19,5 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
   'lsfFacDesc': instance.lsfFacDesc,
   'lsfFacParentId': instance.lsfFacParentId,
   'lsfBizVertical': instance.lsfBizVertical,
+  'lsfFacType': instance.lsfFacType,
 };

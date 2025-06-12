@@ -6,9 +6,12 @@
  */
 
 import 'package:newsee/AppData/DBConstants/dbconstants.dart';
+import 'package:newsee/AppData/DBConstants/table_key_geographymaster.dart';
 import 'package:newsee/AppData/DBConstants/table_key_products.dart';
 import 'package:newsee/AppData/DBConstants/table_key_productschema.dart';
+import 'package:newsee/AppData/DBConstants/table_key_statecitymaster.dart';
 import 'package:newsee/AppData/DBConstants/table_keys_productmaster.dart';
+import 'package:newsee/AppData/DBConstants/table_key_masterversion.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -36,12 +39,25 @@ class DBConfig {
     try {
       // create table sequentially
 
+      /* 
+      @modified  :  karthick.d  11/06/2025
+      @desc      :  statecitymastertable create query deleted 
+                    (due to ease of processing , statecitymaster respons is changed)
+                    so statecitymaster.dart become obsolete
+
+      */
       await db.execute(TableKeysLov.createTableQuery);
       printTableCreateSuccess(TableKeysLov.tableName);
       await db.execute(TableKeysProductSchema.createTableQuery);
       printTableCreateSuccess(TableKeysProductSchema.tableName);
       await db.execute(TableKeysProducts.createTableQuery);
       printTableCreateSuccess(TableKeysProducts.tableName);
+      await db.execute(TableKeysProductMaster.createTableQuery);
+      printTableCreateSuccess(TableKeysProductMaster.tableName);
+      await db.execute(TableKeyMasterversion.createTableQuery);
+      printTableCreateSuccess(TableKeyMasterversion.tableName);
+      await db.execute(TableKeysGeographyMaster.createTableQuery);
+      printTableCreateSuccess(TableKeysGeographyMaster.tableName);
     } catch (e) {
       // db creation failure - > log u r exception
 

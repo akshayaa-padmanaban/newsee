@@ -15,50 +15,49 @@ class DocumentsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
-      title: Text("Document Details"),
-       ),
+      appBar: AppBar(title: Text("Document Details")),
       body: ReactiveForm(
         formGroup: form,
         child: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Dropdown(
-                controlName: 'applicanttype',
-                label: 'Applicant Type',
-                items: [''],
-              ),
-              Dropdown(
-                controlName: 'document',
-                label: 'Document Classification',
-                items: ['Aadhar Card', 'Driving License', 'PAN Card', 'Voter ID'],
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                },
-                child: Text("ADD"),
-              ),
-              SizedBox(height: 50),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (form.valid) {
-                      final tabController = DefaultTabController.of(context);
-                      if (tabController.index < tabController.length - 1) {
-                        tabController.animateTo(tabController.index + 1);
-                      }
-                    } else {
-                      form.markAllAsTouched();
-                    }
-                  },
-                  child: Text('Next'),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Dropdown(
+                  controlName: 'applicanttype',
+                  label: 'Applicant Type',
+                  items: [''],
                 ),
-              ),
-            ],
+                Dropdown(
+                  controlName: 'document',
+                  label: 'Document Classification',
+                  items: [
+                    'Aadhar Card',
+                    'Driving License',
+                    'PAN Card',
+                    'Voter ID',
+                  ],
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(onPressed: () {}, child: Text("ADD")),
+                SizedBox(height: 50),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (form.valid) {
+                        final tabController = DefaultTabController.of(context);
+                        if (tabController.index < tabController.length - 1) {
+                          tabController.animateTo(tabController.index + 1);
+                        }
+                      } else {
+                        form.markAllAsTouched();
+                      }
+                    },
+                    child: Text('Next'),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
         ),
       ),
     );

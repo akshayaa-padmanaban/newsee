@@ -65,3 +65,21 @@ if there is no deviation then no master update
 otherwise update the master only which has deviation
 
 -------- END ------------
+
+
+# Version Based Master Update Refetch Logic
+
+step 1 :    First we fetching lov master 
+
+step 2 :    if master fetching success then update the master version upate table and fetching next master.
+
+step 3 :    if failure then upate the master version table status key as failure and fetching next master
+
+step 4 :    finally all master fetching completed then we check the all master table status key is success or failure.
+
+step 5 :    if all mstatus is success then navigate to homepage 
+
+step 6 :    if some master are failed then refetch the failed master and re update the master table.
+
+When all masters are fetched Successfully and Master Version Table status success then navigate to home page and proceed the application.
+

@@ -1,71 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:newsee/AppSamples/ReactiveForms/view/login-with-account.dart';
 import 'forgetpassword.dart';
 import 'maintain.dart';
 import 'reachus.dart';
 import 'more.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:newsee/AppSamples/ReactiveForms/config/appconfig.dart';
-import 'package:newsee/Model/login_request.dart';
-import 'package:newsee/blocs/login/login_bloc.dart';
-import 'package:newsee/feature/auth/presentation/bloc/auth_bloc.dart';
-import 'package:reactive_forms/reactive_forms.dart';
+import 'login_mpin.dart';
+
+
+/*
+author : Gayathri B 
+description : A stateless widget that serves as the main login screen for the app. It offers
+              users multiple ways to authenticate and access frequently used features:
+            - Login using fingerprint (biometric authentication)
+              - Login with account  username and password
+              - Login using mPIN
+              - Option to reset mPIN via action sheet
+              - Access to additional options like Maintenance, Reach Us, and More
+
+ */
 
 class LoginpageView extends StatelessWidget {
   void fingerPrintScanner() {
     print('clicked finger print');
   }
 
-  /*   login(AuthState state) {
-    if (loginFormgroup.valid) {
-      context.read<AuthBloc>().add(
-        LoginWithAccount(
-          loginRequest: LoginRequest(
-            username: loginFormgroup.value['username'] as String,
-            password: loginFormgroup.value['password'] as String,
-          ),
-        ),
-      );
-      print(state.toString());
-
-      //context.goNamed('home');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all required fields')),
-      );
-    }
-  }
- */
   @override
   Widget build(BuildContext context) {
+    //Header section of the landing page
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.all(0),
+        padding: const EdgeInsets.only(top: 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            
+            Positioned.fill(
+            
+            
+            child: SvgPicture.asset('assets/app_background_2.svg', fit: BoxFit.cover,),
+            
+            
+            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(top: 0),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Text(
+            //         "Hello,\nUser",
+            //         style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            //       ),
+            //       Icon(
+            //         Icons.notifications_none,
+            //         size: 30,
+            //         color: Colors.deepPurpleAccent,
+            //       ),
+            //     ],
+            //   ),
+            // ),
+
+            SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Hello,\nUser",
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                  ),
-                  Icon(
-                    Icons.notifications_none,
-                    size: 30,
-                    color: Colors.deepPurpleAccent,
-                  ),
-                ],
-              ),
-            ),
-
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.all(0),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
@@ -82,6 +79,8 @@ class LoginpageView extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(height: 20),
+
+                    //Login using fingerprint (biometric authentication)
                     IconButton(
                       onPressed: () {
                         fingerPrintScanner();
@@ -99,6 +98,7 @@ class LoginpageView extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 30),
+                    // users multiple ways to authenticate and access frequently used features
                     Text(
                       "Frequently used features & special offers at your fingertips",
                       textAlign: TextAlign.center,
@@ -114,15 +114,21 @@ class LoginpageView extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: () {},
-                                icon: Icon(Icons.calculate_rounded),
-                                iconSize: 40,
+                                  icon: SvgPicture.asset(
+                                      'assets/Retail_loan.svg',
+                                      height: 40,
+                                      width: 40,
+                                    ), iconSize: 40,
                                 color: Colors.amber,
                               ),
-                              Text(
-                                'Emi Calculator',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
+                              Padding(
+                                padding: const EdgeInsets.only(top: 0),
+                                child: Text(
+                                  'Retail Loan',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                  ),
                                 ),
                               ),
                             ],
@@ -132,12 +138,15 @@ class LoginpageView extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: () {},
-                                icon: Icon(Icons.local_offer),
-                                iconSize: 40,
+                                      icon: SvgPicture.asset(
+                                      'assets/Agri_Loan.svg',
+                                      height: 40,
+                                      width: 40,
+                                    ),                                  iconSize: 40,
                                 color: Colors.blue,
                               ),
                               Text(
-                                'Send Money',
+                                'Agree Loan',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14,
@@ -150,12 +159,16 @@ class LoginpageView extends StatelessWidget {
                             children: [
                               IconButton(
                                 onPressed: () {},
-                                icon: Icon(Icons.shopping_bag),
-                                iconSize: 40,
+                                      icon: SvgPicture.asset(
+                                      'assets/MSME.svg',
+                                      height: 40,
+                                      width: 40,
+                                    ),                                 
+                                  iconSize: 40,
                                 color: Colors.pink,
                               ),
                               Text(
-                                'pay Bills',
+                                'MSME Loan',
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 14,
@@ -172,6 +185,7 @@ class LoginpageView extends StatelessWidget {
             ),
             SizedBox(height: 50),
 
+            // Login with account  username and password
             Padding(
               padding: const EdgeInsets.all(20),
               child: Center(
@@ -203,9 +217,10 @@ class LoginpageView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                // Login using mPIN
                 TextButton(
                   onPressed: () {
-                    // mpin(context);
+                    mpin(context);
                   },
                   child: Text("Or, login with mPIN"),
                 ),
@@ -224,8 +239,9 @@ class LoginpageView extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: 150),
+            SizedBox(height: 80),
 
+            // Access to additional options like Maintenance, Reach Us, and More
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [

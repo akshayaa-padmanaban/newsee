@@ -1,4 +1,3 @@
-
 /*
  @created on : May 7,2025
  @author : Akshayaa 
@@ -22,19 +21,11 @@ class LeadTabBar extends StatelessWidget {
               labelColor: Colors.white,
               unselectedLabelColor: Colors.white70,
               indicatorColor: Colors.white,
-              tabs: [
-                Tab(text: "Pending"),
-                Tab(text: "Completed"),
-              ],
+              tabs: [Tab(text: "Pending"), Tab(text: "Completed")],
             ),
           ),
           Expanded(
-            child: TabBarView(
-              children: [
-                PendingLeads(),
-                CompletedLeads(),
-              ],
-            ),
+            child: TabBarView(children: [PendingLeads(), CompletedLeads()]),
           ),
         ],
       ),

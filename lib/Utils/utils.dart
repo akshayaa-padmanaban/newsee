@@ -9,6 +9,3 @@ String formatAmount(String amount) {
     return amount;
   }
 }
-
-
-
