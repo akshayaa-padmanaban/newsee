@@ -22,7 +22,7 @@ class Address extends StatelessWidget {
     'state': FormControl<String>(validators: [Validators.required]),
     'city': FormControl<String>(validators: [Validators.required]),
     'district': FormControl<String>(validators: [Validators.required]),
-    'pincode': FormControl<String>(validators: [Validators.required]),
+    'pincode': FormControl<String>(validators: [Validators.required,Validators.minLength(6)]),
   });
 
   void showSnack(BuildContext context, {required String message}) {

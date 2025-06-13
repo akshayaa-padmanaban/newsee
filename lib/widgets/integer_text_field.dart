@@ -5,6 +5,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:newsee/pages/rupeeformatter.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class IntegerTextField extends StatelessWidget {
@@ -13,13 +14,15 @@ class IntegerTextField extends StatelessWidget {
   final bool mantatory;
   final int? maxlength;
   final int? minlength;
+  final bool isRupeeFormat;
 
   IntegerTextField({
     required this.controlName, 
     required this.label, 
     required this.mantatory,
     this.maxlength,
-    this.minlength
+    this.minlength,
+    this.isRupeeFormat=false,
   });
 
   @override
@@ -30,10 +33,9 @@ class IntegerTextField extends StatelessWidget {
         formControlName: controlName,
         keyboardType: TextInputType.number,
         maxLength: maxlength,
-        // inputFormatters: [
-        //   FilteringTextInputFormatter.digitsOnly,
-        //   LengthLimitingTextInputFormatter(getMaxLength()),
-        // ],
+        inputFormatters: [
+          if (isRupeeFormat) Rupeeformatter(),
+        ],
         decoration: InputDecoration(
           label: RichText(
             text: TextSpan(

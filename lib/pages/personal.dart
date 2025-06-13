@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:newsee/AppData/app_constants.dart';
 import 'package:newsee/Model/personal_data.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
 import 'package:newsee/feature/personaldetails/presentation/bloc/personal_details_bloc.dart';
@@ -20,14 +21,14 @@ class Personal extends StatelessWidget {
     'lastName': FormControl<String>(validators: [Validators.required]),
     'dob': FormControl<String>(validators: [Validators.required]),
     'primaryMobileNumber': FormControl<String>(
-      validators: [Validators.required],
+      validators: [Validators.required,Validators.minLength(10)],
     ),
     'secondaryMobileNumber': FormControl<String>(
-      validators: [Validators.required],
+      validators: [Validators.required,Validators.minLength(10)],
     ),
     'email': FormControl<String>(validators: [Validators.email]),
-    'panNumber': FormControl<String>(validators: [Validators.required]),
-    'aadharRefNo': FormControl<String>(validators: [Validators.required]),
+    'panNumber': FormControl<String>(validators: [Validators.pattern(AppConstants.PAN_PATTERN),Validators.minLength(10)]),
+    'aadharRefNo': FormControl<String>(validators: [Validators.pattern(AppConstants.AADHAAR_PATTERN),Validators.minLength(10)]),
     'loanAmountRequested': FormControl<String>(
       validators: [Validators.required],
     ),
@@ -166,6 +167,7 @@ class Personal extends StatelessWidget {
                         controlName: 'loanAmountRequested',
                         label: 'Loan Amount Required',
                         mantatory: true,
+                        isRupeeFormat: true,
                       ),
                       SearchableDropdown(
                         controlName: 'natureOfActivity',
@@ -196,9 +198,13 @@ class Personal extends StatelessWidget {
                             print("personal Details value ${form.value}");
 
                             if (form.valid) {
-                              PersonalData personalData = PersonalData.fromMap(
-                                form.value,
-                              );
+                              final formMap = Map<String, dynamic>.from(form.value);
+
+                               // Remove commas from loanAmountRequested to store fully numeric string
+                              formMap['loanAmountRequested'] = (formMap['loanAmountRequested'] ?? '').replaceAll(',', '');
+                              
+                              PersonalData personalData = PersonalData.fromMap(formMap);
+                              
                               context.read<PersonalDetailsBloc>().add(
                                 PersonalDetailsSaveEvent(
                                   personalData: personalData,

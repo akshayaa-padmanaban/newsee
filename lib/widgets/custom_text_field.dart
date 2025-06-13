@@ -13,6 +13,7 @@ class CustomTextField extends StatelessWidget {
   final bool mantatory;
   bool? autoCapitalize;
   int? maxlength;
+  int? minlength;
   
 
   CustomTextField({
@@ -21,7 +22,8 @@ class CustomTextField extends StatelessWidget {
     required this.label,
     required this.mantatory,
     this.autoCapitalize,
-    this.maxlength
+    this.maxlength,
+    this.minlength
   });
 
   @override
