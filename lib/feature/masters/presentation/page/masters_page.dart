@@ -129,8 +129,6 @@ class MastersPage extends StatelessWidget {
             builder: (context, state) {
               return DownloadProgressWidget(
                 downloadProgress: progress,
-                scrwidth: scrwidth,
-                scrheight: scrheight,
               );
             },
           ),
