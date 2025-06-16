@@ -93,10 +93,10 @@ First, it attempts to fetch the data from the local database.If no matching data
       columnValues = [event.stateCode, '0'];
     }
 
+    emit(state.copyWith(status: SaveStatus.loading));
     List<GeographyMaster> cityDistrictMaster = await GeographymasterCrudRepo(
       db,
     ).getByColumnNames(columnNames: columnNames, columnValues: columnValues);
-
     if (event.cityCode == null && cityDistrictMaster.isNotEmpty) {
       await Future.delayed(Duration(seconds: 3));
       emit(
@@ -154,6 +154,24 @@ First, it attempts to fetch the data from the local database.If no matching data
             emit(
               state.copyWith(
                 cityMaster: cityList,
+                status: SaveStatus.mastersucess,
+              ),
+            );
+          }
+        } else {
+          if (event.cityCode != null) {
+            await Future.delayed(Duration(seconds: 3));
+            emit(
+              state.copyWith(
+                districtMaster: <GeographyMaster>[],
+                status: SaveStatus.failure,
+              ),
+            );
+          } else {
+            await Future.delayed(Duration(seconds: 3));
+            emit(
+              state.copyWith(
+                cityMaster: <GeographyMaster>[],
                 status: SaveStatus.mastersucess,
               ),
             );

@@ -269,6 +269,7 @@ class Personal extends StatelessWidget {
                       controlName: 'panNumber',
                       label: 'Pan No',
                       mantatory: true,
+                      autoCapitalize: true,
                     ),
                     refAadhaar
                         ? IntegerTextField(
