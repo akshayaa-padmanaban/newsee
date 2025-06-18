@@ -277,7 +277,41 @@ class Loan extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
+                          final blocState =
+                              context.read<LoanproductBloc>().state;
+                          final selectedProduct = blocState.selectedProduct;
+
                           if (form.valid) {
+                            if (selectedProduct == null) {
+                              showDialog(
+                                context: context,
+                                builder:
+                                   (ctx) => AlertDialog(
+                                      title: Row(
+                                        children: [
+                                          Icon(Icons.info, color: Colors.teal),
+                                          SizedBox(width: 8),
+                                          
+                                          Text(
+                                            'Alert',
+                                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                                          ),
+                                        ],
+                                      ),
+                                      content: Text(
+                                        'Please choose a product before processing..',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.of(ctx).pop(),
+                                          child: Text('OK'),
+                                        ),
+                                      ],
+                                    )
+                              );
+                              return;
+                            }
                             print('loan product form value => ${form.value}');
                             context.read<LoanproductBloc>().add(
                               SaveLoanProduct(choosenProduct: form.value),

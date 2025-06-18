@@ -86,22 +86,20 @@ class LeadTileCard extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                      child: GestureDetector(
-                        onTap: () async {
-                          final phoneNumber = "919940362579";
-                           final Uri uri = Uri.parse('tel:$phoneNumber');
-                          if (!await canLaunchUrl(uri)) {
-                            throw 'Could not launch $uri';
-                          } else {
-                            await launchUrl(uri);
-                          }
-                          Navigator.pop(context);
-                        },
-                        child: iconWithLabel(
-                          Icons.phone_outlined, phone
-                        ),
-                      ),
+                    child: GestureDetector(
+                      onTap: () async {
+                        final phoneNumber = "919940362579";
+                        final Uri uri = Uri.parse('tel:$phoneNumber');
+                        if (!await canLaunchUrl(uri)) {
+                          throw 'Could not launch $uri';
+                        } else {
+                          await launchUrl(uri);
+                        }
+                        Navigator.pop(context);
+                      },
+                      child: iconWithLabel(Icons.phone_outlined, phone),
                     ),
+                  ),
                   Expanded(
                     child: iconWithLabel(
                       Icons.calendar_month_outlined,

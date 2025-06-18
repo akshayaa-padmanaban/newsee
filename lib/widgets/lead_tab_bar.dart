@@ -21,11 +21,11 @@ class LeadTabBar extends StatelessWidget {
               labelColor: Colors.white,
               unselectedLabelColor: Colors.white70,
               indicatorColor: Colors.white,
-              tabs: [Tab(text: "Pending"), Tab(text: "Completed")],
+              tabs: [Tab(text: "Completed"), Tab(text:"Pending" )],
             ),
           ),
           Expanded(
-            child: TabBarView(children: [PendingLeads(), CompletedLeads()]),
+            child: TabBarView(children: [ CompletedLeads(),PendingLeads(),]),
           ),
         ],
       ),
