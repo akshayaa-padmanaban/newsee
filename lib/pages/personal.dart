@@ -131,7 +131,10 @@ class Personal extends StatelessWidget {
             'personaldetail::BlocConsumer:listen => ${state.lovList} ${state.personalData} ${state.status?.name}',
           );
           if (state.status == SaveStatus.success) {
+            showSnack(context, message: 'Personal Details Saved Successfully');
             goToNextTab(context: context);
+          } else if (state.status == SaveStatus.failure) {
+            showSnack(context, message: 'Failed to Save Personal Details');
           }
         },
         builder: (context, state) {
@@ -325,195 +328,153 @@ class Personal extends StatelessWidget {
                       mantatory: true,
                       isRupeeFormat: true,
                     ),
-                    SearchableDropdown(
+                    SearchableDropdown<Lov>(
                       controlName: 'natureOfActivity',
                       label: 'Nature of Activity',
-                      items:
-                          state.lovList!
-                              .where((v) => v.Header == 'NatureOfActivity')
-                              .toList(),
-                      onChangeListener:
-                          (Lov val) => form.controls['natureOfActivity']
-                              ?.updateValue(val.optvalue),
+                      items: state.lovList!
+                          .where((v) => v.Header == 'NatureOfActivity')
+                          .toList(),
+                      onChangeListener: (Lov val) {
+                        form.controls['natureOfActivity']?.updateValue(val.optvalue);
+                      },
                       selItem: () {
-                        if (state.personalData != null) {
-                          Lov? lov = state.lovList?.firstWhere(
-                            (lov) =>
-                                lov.Header == 'NatureOfActivity' &&
-                                lov.optvalue ==
-                                    state.personalData?.natureOfActivity,
-                          );
-                          form.controls['natureOfActivity']?.updateValue(
-                            lov?.optvalue,
-                          );
-                          return lov;
-                        } else {
-                          return null;
-                        }
+                        final value = form.control('natureOfActivity').value;
+                        return state.lovList!
+                            .where((v) => v.Header == 'NatureOfActivity')
+                            .firstWhere(
+                              (lov) => lov.optvalue == value,
+                              orElse: () => Lov(
+                                Header: 'NatureOfActivity', optDesc: '', optvalue: '', optCode: '',
+                              ),
+                            );
                       },
                     ),
-                    SearchableDropdown(
+                    SearchableDropdown<Lov>(
                       controlName: 'occupationType',
                       label: 'Occupation Type',
-                      items:
-                          state.lovList!
-                              .where((v) => v.Header == 'OccupationType')
-                              .toList(),
-                      onChangeListener:
-                          (Lov val) => form.controls['occupationType']
-                              ?.updateValue(val.optvalue),
+                      items: state.lovList!
+                          .where((v) => v.Header == 'OccupationType')
+                          .toList(),
+                      onChangeListener: (Lov val) {
+                        form.controls['occupationType']?.updateValue(val.optvalue);
+                      },
                       selItem: () {
-                        if (state.personalData != null) {
-                          Lov? lov = state.lovList?.firstWhere(
-                            (lov) =>
-                                lov.Header == 'OccupationType' &&
-                                lov.optvalue ==
-                                    state.personalData?.occupationType,
-                          );
-                          form.controls['occupationType']?.updateValue(
-                            lov?.optvalue,
-                          );
-                          return lov;
-                        } else {
-                          return null;
-                        }
+                        final value = form.control('occupationType').value;
+                        return state.lovList!
+                            .where((v) => v.Header == 'OccupationType')
+                            .firstWhere(
+                              (lov) => lov.optvalue == value,
+                              orElse: () => Lov(
+                                Header: 'OccupationType', optvalue: '', optDesc: '', optCode: '',
+                              ),
+                            );
                       },
                     ),
-                    SearchableDropdown(
+                    SearchableDropdown<Lov>(
                       controlName: 'agriculturistType',
                       label: 'Agriculturist Type',
-                      items:
-                          state.lovList!
-                              .where((v) => v.Header == 'AgricultType')
-                              .toList(),
-                      onChangeListener:
-                          (Lov val) => form.controls['agriculturistType']
-                              ?.updateValue(val.optvalue),
+                      items: state.lovList!
+                          .where((v) => v.Header == 'AgricultType')
+                          .toList(),
+                      onChangeListener: (Lov val) {
+                        form.controls['agriculturistType']?.updateValue(val.optvalue);
+                      },
                       selItem: () {
-                        if (state.personalData != null) {
-                          Lov? lov = state.lovList?.firstWhere(
-                            (lov) =>
-                                lov.Header == 'AgricultType' &&
-                                lov.optvalue ==
-                                    state.personalData?.agriculturistType,
-                          );
-                          form.controls['agriculturistType']?.updateValue(
-                            lov?.optvalue,
-                          );
-                          return lov;
-                        } else {
-                          return null;
-                        }
+                        final value = form.control('agriculturistType').value;
+                        return state.lovList!
+                            .where((v) => v.Header == 'AgricultType')
+                            .firstWhere(
+                              (lov) => lov.optvalue == value,
+                              orElse: () => Lov(
+                                Header: 'AgricultType', optvalue: '', optDesc: '', optCode: '',
+                              ),
+                            );
                       },
                     ),
-                    SearchableDropdown(
+                    SearchableDropdown<Lov>(
                       controlName: 'farmerCategory',
                       label: 'Farmer Category',
-                      items:
-                          state.lovList!
-                              .where((v) => v.Header == 'FarmerCategory')
-                              .toList(),
-                      onChangeListener:
-                          (Lov val) => form.controls['farmerCategory']
-                              ?.updateValue(val.optvalue),
+                      items: state.lovList!
+                          .where((v) => v.Header == 'FarmerCategory')
+                          .toList(),
+                      onChangeListener: (Lov val) {
+                        form.controls['farmerCategory']?.updateValue(val.optvalue);
+                      },
                       selItem: () {
-                        if (state.personalData != null) {
-                          Lov? lov = state.lovList?.firstWhere(
-                            (lov) =>
-                                lov.Header == 'FarmerCategory' &&
-                                lov.optvalue ==
-                                    state.personalData?.farmerCategory,
-                          );
-                          form.controls['farmerCategory']?.updateValue(
-                            lov?.optvalue,
-                          );
-                          return lov;
-                        } else {
-                          return null;
-                        }
+                        final value = form.control('farmerCategory').value;
+                        return state.lovList!
+                            .where((v) => v.Header == 'FarmerCategory')
+                            .firstWhere(
+                              (lov) => lov.optvalue == value,
+                              orElse: () => Lov(
+                                Header: 'FarmerCategory', optvalue: '', optDesc: '', optCode: '', 
+                              ),
+                            );
                       },
                     ),
-                    SearchableDropdown(
+                    SearchableDropdown<Lov>(
                       controlName: 'farmerType',
                       label: 'Farmer Type',
-                      items:
-                          state.lovList!
-                              .where((v) => v.Header == 'FarmerType')
-                              .toList(),
-                      onChangeListener:
-                          (Lov val) => form.controls['farmerType']
-                              ?.updateValue(val.optvalue),
+                      items: state.lovList!
+                          .where((v) => v.Header == 'FarmerType')
+                          .toList(),
+                      onChangeListener: (Lov val) {
+                        form.controls['farmerType']?.updateValue(val.optvalue);
+                      },
                       selItem: () {
-                        if (state.personalData != null) {
-                          Lov? lov = state.lovList?.firstWhere(
-                            (lov) =>
-                                lov.Header == 'FarmerType' &&
-                                lov.optvalue ==
-                                    state.personalData?.farmerType,
-                          );
-                          form.controls['farmerType']?.updateValue(
-                            lov?.optvalue,
-                          );
-                          return lov;
-                        } else {
-                          return null;
-                        }
+                        final value = form.control('farmerType').value;
+                        return state.lovList!
+                            .where((v) => v.Header == 'FarmerType')
+                            .firstWhere(
+                              (lov) => lov.optvalue == value,
+                              orElse: () => Lov(
+                                Header: 'FarmerType', optvalue: '', optDesc: '', optCode: '',
+                              ),
+                            );
                       },
                     ),
-                    SearchableDropdown(
+                    SearchableDropdown<Lov>(
                       controlName: 'religion',
                       label: 'Religion',
-                      items:
-                          state.lovList!
-                              .where((v) => v.Header == 'Religion')
-                              .toList(),
-                      onChangeListener:
-                          (Lov val) => form.controls['religion']
-                              ?.updateValue(val.optvalue),
+                      items: state.lovList!
+                          .where((v) => v.Header == 'Religion')
+                          .toList(),
+                      onChangeListener: (Lov val) {
+                        form.controls['religion']?.updateValue(val.optvalue);
+                      },
                       selItem: () {
-                        if (state.personalData != null) {
-                          Lov? lov = state.lovList?.firstWhere(
-                            (lov) =>
-                                lov.Header == 'Religion' &&
-                                lov.optvalue ==
-                                    state.personalData?.religion,
-                          );
-                          form.controls['religion']?.updateValue(
-                            lov?.optvalue,
-                          );
-                          return lov;
-                        } else {
-                          return null;
-                        }
+                        final value = form.control('religion').value;
+                        return state.lovList!
+                            .where((v) => v.Header == 'Religion')
+                            .firstWhere(
+                              (lov) => lov.optvalue == value,
+                              orElse: () => Lov(
+                                Header: 'Religion', optvalue: '', optDesc: '', optCode: '',
+                              ),
+                            );
                       },
                     ),
-                    SearchableDropdown(
+                    SearchableDropdown<Lov>(
                       controlName: 'caste',
                       label: 'Caste',
-                      items:
-                          state.lovList!
-                              .where((v) => v.Header == 'Caste')
-                              .toList(),
-                      onChangeListener:
-                          (Lov val) => form.controls['caste']
-                              ?.updateValue(val.optvalue),
-                      selItem: () {
-                        if (state.personalData != null) {
-                          Lov? lov = state.lovList?.firstWhere(
-                            (lov) =>
-                                lov.Header == 'Caste' &&
-                                lov.optvalue ==
-                                    state.personalData?.caste,
-                          );
-                          form.controls['caste']?.updateValue(
-                            lov?.optvalue,
-                          );
-                          return lov;
-                        } else {
-                          return null;
-                        }
+                      items: state.lovList!
+                          .where((v) => v.Header == 'Caste')
+                          .toList(),
+                      onChangeListener: (Lov val) {
+                        form.controls['caste']?.updateValue(val.optvalue);
                       },
-                    ),
+                      selItem: () {
+                        final value = form.control('caste').value;
+                        return state.lovList!
+                            .where((v) => v.Header == 'Caste')
+                            .firstWhere(
+                              (lov) => lov.optvalue == value,
+                              orElse: () => Lov(
+                                Header: 'Caste', optvalue: '', optDesc: '', optCode: '',
+                              ),
+                            );
+                      },
+                    ), 
                     SizedBox(height: 20),
                     Center(
                       child: ElevatedButton(
