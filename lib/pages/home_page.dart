@@ -70,11 +70,12 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Sidenavigationbar(
-        onTabSelected: (index) {
-          setState(() => selectedIndex = index);
-        },
-      ),
+      drawer: Sidenavigationbar(),
+      //(
+      //   onTabSelected: (index) {
+      //     setState(() => selectedIndex = index);
+      //   },
+      // ),
       body: Column(
         children: [
           SearchBarWidget(

@@ -72,3 +72,35 @@ this way user can see the auditlog data and can identify the rootcause at ease
 further download logdata provision and upload to lendperfect server backend to be added
 
 ---
+
+Step 1 – Created Audit Table "auditlog"
+            It stores - Date, Time, Feature name (masterdownload), Log data (in JSON), Error.
+
+Step 2 – Created AuditLog class that has fields to match the table,
+         save and read logs from the database.
+
+Step 3 – Created AuditLogCrudRepo class that contains methods like 
+            save() - to insert logs.
+            getFilteredLogs() - to get logs with filters.
+            getAll() - to get all logs.
+
+Step 4 – Created logMasterAudit() Helper method that 
+            Fills current date and time.
+            Saves feature, data and error.
+            Saves everything using AuditLogCrudRepo.
+
+Step 5 – Added logMasterAudit() in master_repo_impl.dart
+            Before deleting tables
+            After saving data
+            API success or failure
+
+Step 6 – Created UI Page AuditLogPage that contains filter which groups logs by date and feature.
+         If a log is tapped Its details are shown in a tabular format.
+
+Step 7 – Added Page Navigation in Side Navigation Bar. Added "Audit Logs" option.
+         It navigates to the audit log screen using context.goNamed('auditlogs').
+
+Step 8 – Added 'auditlogs' Route in GoRouter.
+
+
+

@@ -17,7 +17,6 @@ import 'package:newsee/feature/masters/data/repository/lov_parser_impl.dart';
 import 'package:newsee/feature/masters/data/repository/product_master_parser_impl.dart';
 import 'package:newsee/feature/masters/data/repository/product_parser_impl.dart';
 import 'package:newsee/feature/masters/data/repository/productschema_parser_impl.dart';
-import 'package:newsee/feature/masters/data/repository/statecity_parser_impl.dart';
 import 'package:newsee/feature/masters/domain/modal/geography_master.dart';
 import 'package:newsee/feature/masters/domain/modal/lov.dart';
 import 'package:newsee/feature/masters/domain/modal/master_request.dart';
@@ -28,6 +27,7 @@ import 'package:newsee/feature/masters/domain/modal/product.dart';
 import 'package:newsee/feature/masters/domain/modal/product_master.dart';
 import 'package:newsee/feature/masters/domain/modal/productschema.dart';
 import 'package:newsee/feature/masters/domain/modal/statecitymaster.dart';
+import 'package:newsee/feature/masters/domain/repository/audit_logger.dart';
 import 'package:newsee/feature/masters/domain/repository/geographymaster_crud_repo.dart';
 import 'package:newsee/feature/masters/domain/repository/lov_crud_repo.dart';
 import 'package:newsee/feature/masters/domain/repository/master_repo.dart';
@@ -51,356 +51,320 @@ class MasterRepoImpl extends MasterRepo {
       master: [],
       masterType: masterTypes,
     );
-    MasterResponse partialResponse = MasterResponse(
-      masterType: masterTypes,
-      master: [],
-      skipMaster: false
-    );
-    // MasterResponse partiallResponse = MasterPartialDownload(
-    //   master;
-    //   masterType;
-    //   bool
-    // );
     AuthFailure failure = AuthFailure(message: "");
 
     try {
-      print("Globalconfig.diffListOfMaster-in master page ${Globalconfig.diffListOfMaster}");
-      var listofmaster = Globalconfig.diffListOfMaster;
-
-      bool getMaster(String name) {
-        var getlist = listofmaster.where(
-          (val) => val.mastername == name
-        );
-        if (getlist.isNotEmpty) {
-          return true;
-        } else {
-          return false;
-        }
-      }
-
-      bool? lovlist = getMaster("Listofvalues");
-      bool? productmasterlist = getMaster("ProductMaster");
-      bool? productschemalist = getMaster("ProductScheme");
-      bool? statecitylist = getMaster("StateCityMaster");
-
       switch (request.setupTypeOfMaster) {
         case ApiConstants.master_key_lov:
-          /* Lov Master fetch from API and Save in respective table */
           masterTypes = MasterTypes.lov;
-          if (listofmaster.isEmpty || lovlist) {
-            Response response = await MastersRemoteDatasource(
+
+          Response response;
+          try {
+            response = await MastersRemoteDatasource(
               dio: ApiClient().getDio(),
             ).downloadMaster(request);
 
-            final String versionFromResponse = response.data['version'];
-            final String masterNameFromResponse = ApiConstants.master_key_lov;
-
-            List<Lov> lovList = LovParserImpl().parseResponse(response);
-            if (lovList.isNotEmpty) {
-              /* Listofvalue master downloaded and saved in table */
-
-              Iterator<Lov> it = lovList.iterator;
-              LovCrudRepo lovCrudRepo = LovCrudRepo(db);
-              lovCrudRepo.deleteAll();
-              while (it.moveNext()) {
-                lovCrudRepo.save(it.current);
-              }
-
-              List<Lov> lovs = await lovCrudRepo.getAll();
-              print('lovCrudRepo.getAll() => ${lovs.length}');
-
-              // Save the updated master version into the db
-              await updateMasterVersion(
-                db,
-                masterNameFromResponse,
-                versionFromResponse,
-                'success',
-              );
-
-              print(
-                "Master Name: $masterNameFromResponse, Version: $versionFromResponse, Success",
-              );
-
-              masterResponse = MasterResponse(
-                master: lovList,
-                masterType: MasterTypes.products,
-              );
-            } else {
-              // api response success : false , process error message
-              var errorMessage = response.data['errorDesc'];
-              print('on Error request.data["ErrorMessage"] => $errorMessage');
-
-              await updateMasterVersion(
-                db,
-                masterNameFromResponse,
-                versionFromResponse,
-                'failure',
-              );
-
-              print(
-                "Master Name: $masterNameFromResponse, Version: $versionFromResponse, Failure",
-              );
-
-              failure = AuthFailure(message: errorMessage);
-            }
-          } else {
-            partialResponse = MasterResponse(
-              masterType: MasterTypes.products,
-              master: [],
-              skipMaster: true
+            await logMasterAudit(
+              db: db,
+              masterName: 'lov',
+              stage: AuditLogger.apiRequest,
             );
-
+          } on DioException catch (e) {
+            await logMasterAudit(
+              db: db,
+              masterName: 'lov',
+              stage: AuditLogger.apiRequest,
+              error: e.message,
+            );
+            rethrow;
           }
-        case ApiConstants.master_key_products:
 
+          final String versionFromResponse = response.data['version'];
+          final String masterNameFromResponse = ApiConstants.master_key_lov;
+
+          List<Lov> lovList = LovParserImpl().parseResponse(response);
+          if (lovList.isNotEmpty) {
+            Iterator<Lov> it = lovList.iterator;
+            LovCrudRepo lovCrudRepo = LovCrudRepo(db);
+            while (it.moveNext()) {
+              lovCrudRepo.save(it.current);
+            }
+
+            await logMasterAudit(
+              db: db,
+              masterName: 'lov',
+              stage: AuditLogger.tableInsert,
+              rowCount: lovList.length,
+            );
+
+            await updateMasterVersion(
+              db,
+              masterNameFromResponse,
+              versionFromResponse,
+              'success',
+            );
+
+            masterResponse = MasterResponse(
+              master: lovList,
+              masterType: MasterTypes.products,
+            );
+          } else {
+            var errorMessage = response.data['errorDesc'];
+
+            await logMasterAudit(
+              db: db,
+              masterName: 'lov',
+              stage: AuditLogger.tableInsert,
+              error: errorMessage,
+            );
+
+            await updateMasterVersion(
+              db,
+              masterNameFromResponse,
+              versionFromResponse,
+              'failure',
+            );
+
+            failure = AuthFailure(message: errorMessage);
+          }
+
+        case ApiConstants.master_key_products:
           masterTypes = MasterTypes.products;
-          if (listofmaster.isEmpty || productmasterlist) {
-            Response response = await MastersRemoteDatasource(
+
+          Response response;
+          try {
+            response = await MastersRemoteDatasource(
               dio: ApiClient().getDio(),
             ).downloadMaster(request);
 
-            final String versionFromResponse = response.data['version'];
-            final String masterNameFromResponse =
-                ApiConstants.master_key_products;
-
-            List<Product> productsList = ProductParserImpl().parseResponse(
-              response,
+            await logMasterAudit(
+              db: db,
+              masterName: 'products',
+              stage: AuditLogger.apiRequest,
             );
-            List<ProductMaster> productmasterList = ProductMasterParserImpl()
-                .parseResponse(response);
-            print("productmasterList is printing here => $productmasterList");
-            if (productsList.isNotEmpty) {
-              // insert products in to products table
-              Iterator<Product> it = productsList.iterator;
-              ProductsCrudRepo productsCrudRepo = ProductsCrudRepo(db);
-              productsCrudRepo.deleteAll();
-              while (it.moveNext()) {
-                productsCrudRepo.save(it.current);
-              }
-              print('Products saved in db successfully... ');
-              List<Product> p = await productsCrudRepo.getAll();
-              print('productCrudRepo.getAll() => ${p.length}');
-              // masterResponse = MasterResponse(
-              //   master: productsList,
-              //   masterType: MasterTypes.productschema,
-              // );
-            } else {
-              var errorMessage = response.data['errorDesc'];
-              print('on Error request.data["ErrorMessage"] => $errorMessage');
-              failure = AuthFailure(message: errorMessage);
+          } on DioException catch (e) {
+            await logMasterAudit(
+              db: db,
+              masterName: 'products',
+              stage: AuditLogger.apiRequest,
+              error: e.message,
+            );
+            rethrow;
+          }
+
+          final String versionFromResponse = response.data['version'];
+          final String masterNameFromResponse =
+              ApiConstants.master_key_products;
+
+          List<Product> productsList =
+              ProductParserImpl().parseResponse(response);
+          List<ProductMaster> productmasterList =
+              ProductMasterParserImpl().parseResponse(response);
+
+          if (productsList.isNotEmpty) {
+            ProductsCrudRepo productsCrudRepo = ProductsCrudRepo(db);
+            for (final p in productsList) {
+              await productsCrudRepo.save(p);
             }
+          }
 
-            if (productmasterList.isNotEmpty) {
-              // insert products in to products table
-
-              Iterator<ProductMaster> it = productmasterList.iterator;
-              print("fucntion passing here for product master list => $it");
-              ProductMasterCrudRepo productsMasterCrudRepo =
-                  ProductMasterCrudRepo(db);
-              productsMasterCrudRepo.deleteAll();
-              while (it.moveNext()) {
-                productsMasterCrudRepo.save(it.current);
-              }
-              print('Products saved in db successfully... ');
-              List<ProductMaster> p = await productsMasterCrudRepo.getAll();
-              print('productCrudRepo.getAll() => ${p.length}');
-            } else {
-              var errorMessage = response.data['errorDesc'];
-              print('on Error request.data["ErrorMessage"] => $errorMessage');
-              failure = AuthFailure(message: errorMessage);
+          if (productmasterList.isNotEmpty) {
+            ProductMasterCrudRepo pmRepo = ProductMasterCrudRepo(db);
+            for (final pm in productmasterList) {
+              await pmRepo.save(pm);
             }
+          }
 
-            if (productmasterList.isNotEmpty) {
-              // insert products in to products table
+          if (productsList.isNotEmpty || productmasterList.isNotEmpty) {
 
-              Iterator<ProductMaster> it = productmasterList.iterator;
-              print("fucntion passing here for product master list => $it");
-              ProductMasterCrudRepo productsMasterCrudRepo =
-                  ProductMasterCrudRepo(db);
-              productsMasterCrudRepo.deleteAll();
-              while (it.moveNext()) {
-                productsMasterCrudRepo.save(it.current);
-              }
-              print('Products saved in db successfully... ');
-              List<ProductMaster> p = await productsMasterCrudRepo.getAll();
-              print('productCrudRepo.getAll() => ${p.length}');
+            await logMasterAudit(
+              db: db,
+              masterName: 'products',
+              stage: AuditLogger.tableInsert,
+              rowCount: productsList.length,
+            );
+            await logMasterAudit(
+              db: db,
+              masterName: 'productmaster',
+              stage: AuditLogger.tableInsert,
+              rowCount: productmasterList.length,
+            );
 
-              await updateMasterVersion(
-                db,
-                masterNameFromResponse,
-                versionFromResponse,
-                'success',
-              );
+            await updateMasterVersion(
+              db,
+              masterNameFromResponse,
+              versionFromResponse,
+              'success',
+            );
 
-              print(
-                "Master Name: $masterNameFromResponse, Version: $versionFromResponse, Success",
-              );
-
-              masterResponse = MasterResponse(
-                master: productmasterList,
-                masterType: MasterTypes.productschema,
-              );
-            } else {
-              var errorMessage = response.data['errorDesc'];
-              print('on Error request.data["ErrorMessage"] => $errorMessage');
-
-              await updateMasterVersion(
-                db,
-                masterNameFromResponse,
-                versionFromResponse,
-                'failure',
-              );
-
-              print(
-                "Master Name: $masterNameFromResponse, Version: $versionFromResponse, Failure",
-              );
-
-              failure = AuthFailure(message: errorMessage);
-            }
-          } else {
-            partialResponse = MasterResponse(
+            masterResponse = MasterResponse(
+              master: productmasterList,
               masterType: MasterTypes.productschema,
-              master: [],
-              skipMaster: true
+            );
+          } else {
+            var errorMessage = response.data['errorDesc'] ?? 'Empty list';
+
+            await logMasterAudit(
+              db: db,
+              masterName: 'products',
+              stage: AuditLogger.tableInsert,
+              error: errorMessage,
             );
 
+            await updateMasterVersion(
+              db,
+              masterNameFromResponse,
+              versionFromResponse,
+              'failure',
+            );
+
+            failure = AuthFailure(message: errorMessage);
           }
 
         case ApiConstants.master_key_productschema:
           masterTypes = MasterTypes.productschema;
-          if (listofmaster.isEmpty || productschemalist) {
 
-            Response response = await MastersRemoteDatasource(
+          Response response;
+          try {
+            response = await MastersRemoteDatasource(
               dio: ApiClient().getDio(),
             ).downloadMaster(request);
-            List<ProductSchema> productSchemaList = ProductSchemaParserImpl()
-                .parseResponse(response);
 
-            final String versionFromResponse = response.data['version'];
-            final String masterNameFromResponse =
-                ApiConstants.master_key_productschema;
+            await logMasterAudit(
+              db: db,
+              masterName: 'productschema',
+              stage: AuditLogger.apiRequest,
+            );
+          } on DioException catch (e) {
+            await logMasterAudit(
+              db: db,
+              masterName: 'productschema',
+              stage: AuditLogger.apiRequest,
+              error: e.message,
+            );
+            rethrow;
+          }
 
-            if (productSchemaList.isNotEmpty) {
-              Iterator<ProductSchema> it = productSchemaList.iterator;
-              ProductSchemaCrudRepo productSchemaCrudRepo = ProductSchemaCrudRepo(
-                db,
-              );
-              productSchemaCrudRepo.deleteAll();
-              while (it.moveNext()) {
-                productSchemaCrudRepo.save(it.current);
-              }
-              print('Products Schema saved in db successfully... ');
-              List<ProductSchema> p = await productSchemaCrudRepo.getAll();
+          List<ProductSchema> productSchemaList =
+              ProductSchemaParserImpl().parseResponse(response);
 
-              await updateMasterVersion(
-                db,
-                masterNameFromResponse,
-                versionFromResponse,
-                'success',
-              );
-
-              print(
-                "Master Name: $masterNameFromResponse, Version: $versionFromResponse, Success",
-              );
-
-              print('productSchemaCrudRepo.getAll() => ${p.length}');
-
-              print(
-                "Master Name: $masterNameFromResponse, Version: $versionFromResponse, Failure",
-              );
-              masterResponse = MasterResponse(
-                master: productSchemaList,
-                masterType: MasterTypes.statecitymaster,
-              );
-            } else {
-              var errorMessage = response.data['errorDesc'];
-              print('on Error request.data["ErrorMessage"] => $errorMessage');
-
-              await updateMasterVersion(
-                db,
-                masterNameFromResponse,
-                versionFromResponse,
-                'failure',
-              );
-
-              print(
-                "Master Name: $masterNameFromResponse, Version: $versionFromResponse, Failure",
-              );
-
-              failure = AuthFailure(message: errorMessage);
+          if (productSchemaList.isNotEmpty) {
+            ProductSchemaCrudRepo psRepo = ProductSchemaCrudRepo(db);
+            for (final ps in productSchemaList) {
+              await psRepo.save(ps);
             }
-          } else {
-            partialResponse = MasterResponse(
-              masterType: MasterTypes.statecitymaster,
-              master: [],
-              skipMaster: true
+
+            await logMasterAudit(
+              db: db,
+              masterName: 'productschema',
+              stage: AuditLogger.tableInsert,
+              rowCount: productSchemaList.length,
             );
 
+            final String versionFromResponse = response.data['version'];
+            await updateMasterVersion(
+              db,
+              ApiConstants.master_key_productschema,
+              versionFromResponse,
+              'success',
+            );
+
+            masterResponse = MasterResponse(
+              master: productSchemaList,
+              masterType: MasterTypes.statecitymaster,
+            );
+          } else {
+            var errorMessage = response.data['errorDesc'] ?? 'Empty list';
+
+            await logMasterAudit(
+              db: db,
+              masterName: 'productschema',
+              stage: AuditLogger.tableInsert,
+              error: errorMessage,
+            );
+
+            final String versionFromResponse = response.data['version'];
+            await updateMasterVersion(
+              db,
+              ApiConstants.master_key_productschema,
+              versionFromResponse,
+              'failure',
+            );
+
+            failure = AuthFailure(message: errorMessage);
           }
 
         case ApiConstants.master_key_statecity:
           masterTypes = MasterTypes.statecitymaster;
-          if (listofmaster.isEmpty || statecitylist) {
-            Response response = await MastersRemoteDatasource(
+
+          Response response;
+          try {
+            response = await MastersRemoteDatasource(
               dio: ApiClient().getDio(),
             ).downloadMaster(request);
 
-            final String versionFromResponse = response.data['version'];
-            final String masterNameFromResponse =
-                ApiConstants.master_key_statecity;
-
-            List<GeographyMaster> statecityList = GeographyParserImpl()
-                .parseResponse(response);
-            print("GeographyMaster is printing here => $statecityList");
-            if (statecityList.isNotEmpty) {
-              Iterator<GeographyMaster> it = statecityList.iterator;
-              GeographymasterCrudRepo statecityMasterCrudRepo =
-                  GeographymasterCrudRepo(db);
-              statecityMasterCrudRepo.deleteAll();
-              while (it.moveNext()) {
-                statecityMasterCrudRepo.save(it.current);
-              }
-              print('State city list saved in db successfully... ');
-              List<GeographyMaster> p = await statecityMasterCrudRepo.getAll();
-
-              await updateMasterVersion(
-                db,
-                masterNameFromResponse,
-                versionFromResponse,
-                'success',
-              );
-
-              print(
-                "Master Name: $masterNameFromResponse, Version: $versionFromResponse, Success",
-              );
-
-              print('GeographyMaster.getAll() => ${p.length}');
-
-              masterResponse = MasterResponse(
-                master: statecityList,
-                masterType: MasterTypes.success,
-              );
-            } else {
-              var errorMessage = response.data['errorDesc'];
-              print('on Error request.data["ErrorMessage"] => $errorMessage');
-              await updateMasterVersion(
-                db,
-                masterNameFromResponse,
-                versionFromResponse,
-                'failure',
-              );
-
-              print(
-                "Master Name: $masterNameFromResponse, Version: $versionFromResponse, Failure",
-              );
-              failure = AuthFailure(message: errorMessage);
-            } 
-          } else {
-            partialResponse = MasterResponse(
-              masterType: MasterTypes.success,
-              master: [],
-              skipMaster: true
+            await logMasterAudit(
+              db: db,
+              masterName: 'statecitymaster',
+              stage: AuditLogger.apiRequest,
             );
+          } on DioException catch (e) {
+            await logMasterAudit(
+              db: db,
+              masterName: 'statecitymaster',
+              stage: AuditLogger.apiRequest,
+              error: e.message,
+            );
+            rethrow;
+          }
+
+          List<GeographyMaster> statecityList =
+              GeographyParserImpl().parseResponse(response);
+
+          if (statecityList.isNotEmpty) {
+            GeographymasterCrudRepo scRepo = GeographymasterCrudRepo(db);
+            for (final sc in statecityList) {
+              await scRepo.save(sc);
+            }
+
+            await logMasterAudit(
+              db: db,
+              masterName: 'statecitymaster',
+              stage: AuditLogger.tableInsert,
+              rowCount: statecityList.length,
+            );
+
+            final String versionFromResponse = response.data['version'];
+            await updateMasterVersion(
+              db,
+              ApiConstants.master_key_statecity,
+              versionFromResponse,
+              'success',
+            );
+
+            masterResponse = MasterResponse(
+              master: statecityList,
+              masterType: MasterTypes.success,
+            );
+          } else {
+            var errorMessage = response.data['errorDesc'] ?? 'Empty list';
+
+            await logMasterAudit(
+              db: db,
+              masterName: 'statecitymaster',
+              stage: AuditLogger.tableInsert,
+              error: errorMessage,
+            );
+
+            final String versionFromResponse = response.data['version'];
+            await updateMasterVersion(
+              db,
+              ApiConstants.master_key_statecity,
+              versionFromResponse,
+              'failure',
+            );
+
+            failure = AuthFailure(message: errorMessage);
           }
 
         default:
@@ -408,20 +372,14 @@ class MasterRepoImpl extends MasterRepo {
       }
 
       // returning AsyncResponseHandler...
-
       if (masterResponse.master.isNotEmpty) {
         return AsyncResponseHandler.right(masterResponse);
-      } else if (partialResponse.skipMaster == true) {
-        return AsyncResponseHandler.right(partialResponse);
       } else {
         return AsyncResponseHandler.left(failure);
       }
     } on DioException catch (e) {
       HttpConnectionFailure failure =
           DioHttpExceptionParser(exception: e).parse();
-      return AsyncResponseHandler.left(failure);
-    } catch (error) {
-      print("downloadMaster-impl page $error");
       return AsyncResponseHandler.left(failure);
     }
   }
@@ -435,29 +393,17 @@ class MasterRepoImpl extends MasterRepo {
     try {
       final masterVersionCrudRepo = MasterversionCrudRepo(db);
 
-      var dblength =  await masterVersionCrudRepo.getByColumnName(columnName: 'mastername', columnValue: masterNameFromResponse);
-
-      if (dblength.isEmpty) {
-        await masterVersionCrudRepo.save(
-          MasterVersion(
-            mastername: masterNameFromResponse,
-            version: versionFromResponse,
-            status: isMasterDownloadSuccess,
-          ),
-        );
-      } else {
-        await masterVersionCrudRepo.update(
-          MasterVersion(
-            mastername: masterNameFromResponse,
-            version: versionFromResponse,
-            status: isMasterDownloadSuccess,
-          ),
+      await masterVersionCrudRepo.save(
+        MasterVersion(
+          mastername: masterNameFromResponse,
+          version: versionFromResponse,
+          status: isMasterDownloadSuccess,
+        ),
       );
-      }
-
-      
     } catch (e) {
       print("Error inserting masterversion : $e");
     }
-  }  // now lov is a List contains Map<String,dynamic>
+  }
+
+  // now lov is a List contains Map<String,dynamic>
 }

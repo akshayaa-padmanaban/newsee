@@ -35,8 +35,8 @@ class AppRouteConstants {
     'name': 'cropdetails',
     'path': '/cropdetails',
   };
-  static const RouteProps IMAGE_VIEW_PAGE = {
-    'name': '  imageview',
-    'path': '/imageview',
+  static const RouteProps AUDITLOG_PAGE = {
+    'name': 'auditlogs',
+    'path': '/auditlogs',
   };
 }
