@@ -142,11 +142,19 @@ final routes = GoRouter(
       name: AppRouteConstants.PROFILE_PAGE['name'],
       builder: (context, state) => ProfilePage(),
     ),
+    // GoRoute(
+    //   path: AppRouteConstants.CIC_CHECK_PAGE['path']!,
+    //   name: AppRouteConstants.CIC_CHECK_PAGE['name'],
+    //   builder: (context, state) => CicCheckPage(),
+    // ),
     GoRoute(
-      path: AppRouteConstants.CIC_CHECK_PAGE['path']!,
-      name: AppRouteConstants.CIC_CHECK_PAGE['name'],
-      builder: (context, state) => CicCheckPage(),
-    ),
+  path: AppRouteConstants.CIC_CHECK_PAGE['path']!,
+  name: AppRouteConstants.CIC_CHECK_PAGE['name'],
+  builder: (context, state) {
+    final proposal = state.extra as Map<String, dynamic>;
+    return CicCheckPage(proposal: proposal);
+  },
+),
     GoRoute(
       path: AppRouteConstants.CAMERA_PAGE['path']!,
       name: AppRouteConstants.CAMERA_PAGE['name'],

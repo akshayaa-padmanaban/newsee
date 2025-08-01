@@ -247,7 +247,7 @@ class ProposalInbox extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CicCheckPage()),
+                  MaterialPageRoute(builder: (context) => CicCheckPage(proposal: proposal)),
                 );
               },
             ),
