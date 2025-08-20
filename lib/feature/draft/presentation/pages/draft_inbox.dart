@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:newsee/feature/draft/domain/draft_lead_model.dart';
 import 'package:newsee/feature/draft/draft_service.dart';
 import 'package:newsee/feature/draft/draft_event_notifier.dart';
+import 'package:newsee/pages/hero_animation_page.dart';
 import 'package:newsee/widgets/lead_tile_card.dart';
 import 'package:number_paginator/number_paginator.dart';
 
@@ -81,38 +82,79 @@ class DraftInboxState extends State<DraftInbox> {
                         ),
                       ],
                     )
-                    : ListView.builder(
+                    : GridView.builder(
+                      padding: const EdgeInsets.all(8),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                          ),
                       itemCount: paginatedDrafts.length,
                       itemBuilder: (context, index) {
                         final draft = paginatedDrafts[index];
-                        return LeadTileCard(
-                          title: draft.personal['firstName'] ?? 'N/A',
-                          subtitle: draft.leadref,
-                          icon: Icons.person,
-                          color: Colors.teal,
-                          type:
-                              draft.dedupe['isNewCustomer'] == false
-                                  ? 'Existing Customer'
-                                  : 'New Customer',
-                          product:
-                              draft
-                                  .loan['selectedProductScheme']['optionDesc'] ??
-                              'N/A',
-                          phone: draft.personal['primaryMobileNumber'] ?? 'N/A',
-                          ennablePhoneTap: true,
-                          createdon: draft.personal['dob'] ?? 'N/A',
-                          location: draft.address['state'] ?? 'N/A',
-                          loanamount:
-                              draft.personal['loanAmountRequested']
-                                  ?.toString() ??
-                              '',
-                          onTap: () {
-                            context.pushNamed(
-                              'newlead',
-                              extra: {'leadData': draft, 'tabType': 'draft'},
-                            );
-                          },
-                          showarrow: false,
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Expanded(
+                              child: Hero(
+                                tag: draft.leadref,
+                                child: LeadTileCard(
+                                  title: draft.personal['firstName'] ?? 'N/A',
+                                  subtitle: draft.leadref,
+                                  icon: Icons.person,
+                                  color: Colors.teal,
+                                  type:
+                                      draft.dedupe['isNewCustomer'] == false
+                                          ? 'Existing Customer'
+                                          : 'New Customer',
+                                  product:
+                                      draft
+                                          .loan['selectedProductScheme']['optionDesc'] ??
+                                      'N/A',
+                                  phone:
+                                      draft.personal['primaryMobileNumber'] ??
+                                      'N/A',
+                                  ennablePhoneTap: true,
+                                  createdon: draft.personal['dob'] ?? 'N/A',
+                                  location: draft.address['state'] ?? 'N/A',
+                                  loanamount:
+                                      draft.personal['loanAmountRequested']
+                                          ?.toString() ??
+                                      '',
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) =>
+                                                HeroAnimationPage(draft: draft),
+                                      ),
+                                    );
+                                  },
+                                  showarrow: false,
+                            button: TextButton(
+                              onPressed: () {
+                                context.pushNamed(
+                                  'document',
+                                  extra: draft.leadref,
+                                );
+                              },
+                              style: TextButton.styleFrom(
+                                side: const BorderSide(color: Colors.teal),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                minimumSize: const Size(40, 25),
+                              ),
+                              child: const Text(
+                                'Upload Documents',
+                                style: TextStyle(color: Colors.teal),
+                              ),
+                            ),
+                                ),
+                              ),
+                            ),
+                            
+                          ],
                         );
                       },
                     ),
